@@ -12,7 +12,7 @@
 	<artifactId>gym</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>gym</name>
-	<description>Demo project for Spring Boot</description>
+	<description>Gestion de gimnasio</description>
 	<url/>
 	<licenses>
 		<license/>
