@@ -35,6 +35,13 @@ const Login = () => {
   return (
     <div className="login-container">
       <div className="login-form-container">
+        <div className="logo-container">
+          {/* Opción 1: Un círculo con inicial */}
+          <div className="logo">G</div>
+          
+          {/* Opción 2: Una imagen real (descomenta para usar) */}
+          {/* <img src="/path/to/your/logo.png" alt="Gimnasio Logo" className="logo-img" /> */}
+        </div>
         <h2>Sistema de Gestión de Gimnasio</h2>
         <form onSubmit={handleSubmit} className="login-form">
           <div className="form-group">
