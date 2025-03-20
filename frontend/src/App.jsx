@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Login from './Components/Login.jsx';
 import Home from './Components/Home.jsx';
-import { isAuthenticated } from './Utils/auth';
+import { isAuthenticated } from './Utils/auth.js';
 
 // Componente para rutas protegidas
 const ProtectedRoute = ({ children }) => {
