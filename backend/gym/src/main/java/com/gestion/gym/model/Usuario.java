@@ -15,19 +15,22 @@ public class Usuario {
     private String apellido;
     private String email;
     private String password;
-    private String rol;
 
-    public Usuario(){
+    @ManyToOne
+    @JoinColumn(name = "roles_id", nullable = false)
+    private Roles roles;
+
+    public Usuario() {
 
     }
 
-    public Usuario(int id_usuario, String nombre, String apellido, String email, String password, String rol) {
+    public Usuario(int id_usuario, String nombre, String apellido, String email, String password, Roles roles) {
         this.id_usuario = id_usuario;
         this.nombre = nombre;
         this.apellido = apellido;
         this.email = email;
         this.password = password;
-        this.rol = rol;
+        this.roles = roles;
     }
 
     public int getId_usuario() {
@@ -70,11 +73,11 @@ public class Usuario {
         this.password = password;
     }
 
-    public String getRol() {
-        return rol;
+    public Roles getRoles() {
+        return roles;
     }
 
-    public void setRol(String rol) {
-        this.rol = rol;
+    public void setRoles(Roles roles) {
+        this.roles = roles;
     }
 }

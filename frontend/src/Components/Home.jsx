@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getUserSession, removeUserSession } from '../Utils/auth.js';
 import { getUsuarios } from '../Service/api.js';
-import '../styles/Home.css';
+import '../Styles/Home.css';
 
 const Home = () => {
   const [usuarios, setUsuarios] = useState([]);
