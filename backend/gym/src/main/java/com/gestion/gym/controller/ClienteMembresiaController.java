@@ -11,7 +11,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/cliente-membresia")
-@CrossOrigin(origins = "http://localhost:3000")
 public class ClienteMembresiaController {
 
     @Autowired

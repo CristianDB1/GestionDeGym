@@ -4,7 +4,12 @@ import com.gestion.gym.model.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+import java.util.Optional;
+
 @Repository
 public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
-    Usuario findByEmailAndPassword(String email, String password);
+    Optional<Usuario> findByUsername(String username);
+    boolean existsByUsername(String username);
+    List<Usuario> findByRol_Nombre(String nombreRol);
 }

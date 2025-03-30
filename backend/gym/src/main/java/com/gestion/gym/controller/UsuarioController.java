@@ -1,9 +1,7 @@
 package com.gestion.gym.controller;
 
-import com.gestion.gym.model.LoginRequest;
 import com.gestion.gym.model.Usuario;
 import com.gestion.gym.service.UsuarioService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,56 +10,60 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/usuarios")
-@CrossOrigin(origins = "http://localhost:3000")
 public class UsuarioController {
 
-    @Autowired
-    private UsuarioService usuarioService;
+    private final UsuarioService usuarioService;
+
+    public UsuarioController(UsuarioService usuarioService) {
+        this.usuarioService = usuarioService;
+    }
 
     @GetMapping("/listar")
     public ResponseEntity<List<Usuario>> obtenerTodosUsuarios() {
-        return new ResponseEntity<>(usuarioService.obtenerTodos(), HttpStatus.OK);
+        List<Usuario> usuarios = usuarioService.obtenerTodos();
+        return ResponseEntity.ok(usuarios);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Usuario> obtenerUsuarioPorId(@PathVariable int id) {
         return usuarioService.obtenerPorId(id)
-                .map(usuario -> new ResponseEntity<>(usuario, HttpStatus.OK))
-                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping("/crear")
-    public ResponseEntity<Usuario> crearUsuario(@RequestBody Usuario usuario) {
-        return new ResponseEntity<>(usuarioService.guardar(usuario), HttpStatus.CREATED);
+    public ResponseEntity<?> crearUsuario(@RequestBody Usuario usuario) {
+        try {
+            Usuario nuevoUsuario = usuarioService.guardar(usuario);
+            return ResponseEntity.status(HttpStatus.CREATED).body(nuevoUsuario);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Usuario> actualizarUsuario(@PathVariable int id, @RequestBody Usuario usuario) {
+    public ResponseEntity<?> actualizarUsuario(@PathVariable int id, @RequestBody Usuario usuario) {
         return usuarioService.obtenerPorId(id)
                 .map(usuarioExistente -> {
-                    usuario.setId_usuario(id);
-                    return new ResponseEntity<>(usuarioService.guardar(usuario), HttpStatus.OK);
+                    usuarioExistente.setNombre(usuario.getNombre());
+                    usuarioExistente.setApellido(usuario.getApellido());
+                    usuarioExistente.setUsername(usuario.getUsername());
+                    usuarioExistente.setPassword(usuario.getPassword());
+                    usuarioExistente.setRol(usuario.getRol());
+
+                    Usuario usuarioActualizado = usuarioService.guardar(usuarioExistente);
+                    return ResponseEntity.ok(usuarioActualizado);
                 })
-                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminarUsuario(@PathVariable int id) {
+    public ResponseEntity<Object> eliminarUsuario(@PathVariable int id) {
         return usuarioService.obtenerPorId(id)
                 .map(usuario -> {
                     usuarioService.eliminar(id);
-                    return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+                    return ResponseEntity.noContent().build();
                 })
-                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
-    }
-
-    @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
-        Usuario usuario = usuarioService.autenticar(loginRequest.getEmail(), loginRequest.getPassword());
-        if (usuario != null) {
-            return ResponseEntity.ok(usuario);
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciales inválidas");
-        }
+                .orElse(ResponseEntity.notFound().build());
     }
 }

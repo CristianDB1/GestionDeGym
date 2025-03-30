@@ -2,7 +2,7 @@ package com.gestion.gym.service;
 
 import com.gestion.gym.model.Usuario;
 import com.gestion.gym.repository.UsuarioRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,8 +11,11 @@ import java.util.Optional;
 @Service
 public class UsuarioService {
 
-    @Autowired
-    private UsuarioRepository usuarioRepository;
+    private final UsuarioRepository usuarioRepository;
+
+    public UsuarioService(UsuarioRepository usuarioRepository) {
+        this.usuarioRepository = usuarioRepository;
+    }
 
     public List<Usuario> obtenerTodos() {
         return usuarioRepository.findAll();
@@ -22,15 +25,24 @@ public class UsuarioService {
         return usuarioRepository.findById(id);
     }
 
+    public Optional<Usuario> obtenerPorUsuario(String username) {
+        return usuarioRepository.findByUsername(username);
+    }
+
+    @Transactional
     public Usuario guardar(Usuario usuario) {
+        // Verificar si ya existe un usuario con el mismo username
+        if (usuarioRepository.existsByUsername(usuario.getUsername())) {
+            throw new IllegalArgumentException("El nombre de usuario ya está en uso.");
+        }
         return usuarioRepository.save(usuario);
     }
 
-    public Usuario autenticar(String email, String password) {
-        return usuarioRepository.findByEmailAndPassword(email, password);
-    }
-
+    @Transactional
     public void eliminar(int id) {
+        if (!usuarioRepository.existsById(id)) {
+            throw new IllegalArgumentException("El usuario con ID " + id + " no existe.");
+        }
         usuarioRepository.deleteById(id);
     }
 }

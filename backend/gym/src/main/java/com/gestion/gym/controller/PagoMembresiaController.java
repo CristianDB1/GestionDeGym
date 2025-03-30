@@ -11,7 +11,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/pago-membresia")
-@CrossOrigin(origins = "http://localhost:3000")
 public class PagoMembresiaController {
 
     @Autowired

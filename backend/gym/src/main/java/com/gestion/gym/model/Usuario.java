@@ -1,5 +1,6 @@
 package com.gestion.gym.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -11,26 +12,31 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id_usuario;
 
+    @Column(nullable = false)
     private String nombre;
+    @Column(nullable = false)
     private String apellido;
-    private String email;
+    @Column(unique = true, nullable = false)
+    private String username;
+    @JsonIgnore
+    @Column(nullable = false)
     private String password;
 
     @ManyToOne
-    @JoinColumn(name = "roles_id", nullable = false)
-    private Roles roles;
+    @JoinColumn(name = "rol_id", nullable = false)
+    private Rol rol;
 
     public Usuario() {
 
     }
 
-    public Usuario(int id_usuario, String nombre, String apellido, String email, String password, Roles roles) {
+    public Usuario(int id_usuario, String nombre, String apellido, String username, String password, Rol rol) {
         this.id_usuario = id_usuario;
         this.nombre = nombre;
         this.apellido = apellido;
-        this.email = email;
+        this.username = username;
         this.password = password;
-        this.roles = roles;
+        this.rol = rol;
     }
 
     public int getId_usuario() {
@@ -53,17 +59,11 @@ public class Usuario {
         return apellido;
     }
 
-    public void setApellido(String apellido) {
-        this.apellido = apellido;
-    }
+    public void setApellido(String apellido) {this.apellido = apellido;}
 
-    public String getEmail() {
-        return email;
-    }
+    public String getUsername() {return username;}
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+    public void setUsername(String username) {this.username = username;}
 
     public String getPassword() {
         return password;
@@ -73,11 +73,11 @@ public class Usuario {
         this.password = password;
     }
 
-    public Roles getRoles() {
-        return roles;
+    public Rol getRol() {
+        return rol;
     }
 
-    public void setRoles(Roles roles) {
-        this.roles = roles;
+    public void setRol(Rol rol) {
+        this.rol = rol;
     }
 }
