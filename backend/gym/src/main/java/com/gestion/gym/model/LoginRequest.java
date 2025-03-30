@@ -1,4 +1,4 @@
-package com.gestion.gym.controller;
+package com.gestion.gym.model;
 
 public class LoginRequest {
     private String email;

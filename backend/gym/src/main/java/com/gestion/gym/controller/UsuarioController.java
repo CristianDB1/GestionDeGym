@@ -1,5 +1,6 @@
 package com.gestion.gym.controller;
 
+import com.gestion.gym.model.LoginRequest;
 import com.gestion.gym.model.Usuario;
 import com.gestion.gym.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
