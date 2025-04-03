@@ -12,6 +12,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/clientes")
+@CrossOrigin(origins = "http://127.0.0.1:5500")
 public class ClienteController {
 
     @Autowired
@@ -22,7 +23,7 @@ public class ClienteController {
         return new ResponseEntity<>(clienteService.obtenerTodos(), HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/buscar/{id}")
     public ResponseEntity<Cliente> obtenerClientePorId(@PathVariable int id) {
         Optional<Cliente> cliente = clienteService.obtenerPorId(id);
         return cliente.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
@@ -34,7 +35,7 @@ public class ClienteController {
         return new ResponseEntity<>(clienteService.guardar(cliente), HttpStatus.CREATED);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/actualizar/{id}")
     public ResponseEntity<Cliente> actualizarCliente(@PathVariable int id, @RequestBody Cliente cliente) {
         return clienteService.obtenerPorId(id)
                 .map(clienteExistente -> {
@@ -44,7 +45,7 @@ public class ClienteController {
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/eliminar/{id}")
     public ResponseEntity<Void> eliminarCliente(@PathVariable int id) {
         return clienteService.obtenerPorId(id)
                 .map(cliente -> {

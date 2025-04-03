@@ -11,17 +11,17 @@ import java.util.Optional;
 @Service
 public class RolService {
 
-    private final RolRepository rolRepository;
+    private static RolRepository rolRepository;
 
     public RolService(RolRepository rolRepository) {
-        this.rolRepository = rolRepository;
+        RolService.rolRepository = rolRepository;
     }
 
     public List<Rol> obtenerTodos() {
         return rolRepository.findAll();
     }
 
-    public Optional<Rol> obtenerPorId(int id) {
+    public static Optional<Rol> obtenerPorId(int id) {
         return rolRepository.findById(id);
     }
 

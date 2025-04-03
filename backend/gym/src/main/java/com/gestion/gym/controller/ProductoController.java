@@ -12,6 +12,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/productos")
+@CrossOrigin(origins = "http://127.0.0.1:5500")
 public class ProductoController {
 
     @Autowired
@@ -22,14 +23,35 @@ public class ProductoController {
         return new ResponseEntity<>(productoService.obtenerTodos(), HttpStatus.OK);
     }
 
+    @GetMapping("/buscar/{id}")
+    public ResponseEntity<Producto> obtenerProductoPorId(@PathVariable int id){
+        Optional<Producto> producto = productoService.obtenerPorId(id);
+        return producto.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
     @PostMapping("/crear")
     public ResponseEntity<Producto> crear(@RequestBody Producto producto) {
         return new ResponseEntity<>(productoService.guardar(producto), HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminar(@PathVariable int id) {
-        productoService.eliminar(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    @PutMapping("/actualizar/{id}")
+    public ResponseEntity<Producto> actualizarProducto(@PathVariable int id, @RequestBody Producto producto){
+        return productoService.obtenerPorId(id)
+                .map(productoExiste->{
+                    producto.setId_producto(id);
+                    return new ResponseEntity<>(productoService.guardar(producto),HttpStatus.OK);
+                })
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @DeleteMapping("/eliminar/{id}")
+    public ResponseEntity<Void> eliminarProducto(@PathVariable int id) {
+        return productoService.obtenerPorId(id)
+                .map(producto -> {
+                    productoService.eliminar(id);
+                    return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+                })
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 }

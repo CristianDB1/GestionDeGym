@@ -1,5 +1,7 @@
 package com.gestion.gym.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.util.List;
 
@@ -15,6 +17,7 @@ public class Rol {
     private String descripcion;
 
     @OneToMany(mappedBy = "rol", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<Usuario> usuario;
 
     public Rol() {
