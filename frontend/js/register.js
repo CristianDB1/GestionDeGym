@@ -11,7 +11,7 @@ document.getElementById("registerForm").addEventListener("submit", async functio
         apellido: apellido,
         username: username,
         password: password,
-        rol_id: 1 // El rol de recepcionista (asumimos que 2 es el ID de RECEPCIONISTA)
+        rol_id: 2 // El rol de recepcionista (asumimos que 2 es el ID de RECEPCIONISTA)
     };
 
     try {
