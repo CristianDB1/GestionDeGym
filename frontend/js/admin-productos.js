@@ -26,6 +26,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     producto.descripcion,
                     producto.precio,
                     producto.stock,
+                    producto.proveedor,
                     `<button class="btn btn-warning btn-sm editar-producto" data-id="${producto.id_producto}">Editar</button>
                      <button class="btn btn-danger btn-sm eliminar-producto" data-id="${producto.id_producto}">Eliminar</button>`
                 ]);

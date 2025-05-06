@@ -19,15 +19,20 @@ public class Producto {
     @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL)
     private List<VentaProducto> ventas;
 
+    @ManyToOne
+    @JoinColumn(name = "id_proveedor")
+    private Proveedor proveedor;
+
     public Producto() {}
 
-    public Producto(int id_producto, String nombre, String descripcion, double precio, int stock, List<VentaProducto> ventas) {
+    public Producto(int id_producto, String nombre, String descripcion, double precio, int stock, List<VentaProducto> ventas, Proveedor proveedor) {
         this.id_producto = id_producto;
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.precio = precio;
         this.stock = stock;
         this.ventas = ventas;
+        this.proveedor = proveedor;
     }
 
     public int getId_producto() {
@@ -76,5 +81,13 @@ public class Producto {
 
     public void setVentas(List<VentaProducto> ventas) {
         this.ventas = ventas;
+    }
+
+    public Proveedor getProveedor() {
+        return proveedor;
+    }
+
+    public void setProveedor(Proveedor proveedor) {
+        this.proveedor = proveedor;
     }
 }
