@@ -1,0 +1,73 @@
+package com.gestion.gym.model;
+
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "compra_producto")
+public class CompraProducto {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id_compra_producto;
+
+    @ManyToOne
+    @JoinColumn(name = "compra_id")
+    private Compra compra;
+
+    @ManyToOne
+    @JoinColumn(name = "prodcuto_id")
+    private Producto producto;
+
+    private int cantidad;
+    private double precioCompra;
+
+    public CompraProducto(){}
+
+    public CompraProducto(int id_compra_producto, Compra compra, Producto producto, int cantidad, double precioCompra) {
+        this.id_compra_producto = id_compra_producto;
+        this.compra = compra;
+        this.producto = producto;
+        this.cantidad = cantidad;
+        this.precioCompra = precioCompra;
+    }
+
+    public int getId_compra_producto() {
+        return id_compra_producto;
+    }
+
+    public void setId_compra_producto(int id_compra_producto) {
+        this.id_compra_producto = id_compra_producto;
+    }
+
+    public Compra getCompra() {
+        return compra;
+    }
+
+    public void setCompra(Compra compra) {
+        this.compra = compra;
+    }
+
+    public Producto getProducto() {
+        return producto;
+    }
+
+    public void setProducto(Producto producto) {
+        this.producto = producto;
+    }
+
+    public int getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(int cantidad) {
+        this.cantidad = cantidad;
+    }
+
+    public double getPrecioCompra() {
+        return precioCompra;
+    }
+
+    public void setPrecioCompra(double precioCompra) {
+        this.precioCompra = precioCompra;
+    }
+}
