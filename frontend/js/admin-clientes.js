@@ -21,13 +21,13 @@ document.addEventListener("DOMContentLoaded", function () {
             table.clear();
             data.forEach(cliente => {
                 table.row.add([
-                    cliente.id_cliente,
+                    cliente.idCliente,
                     cliente.nombre,
                     cliente.apellido,
                     cliente.email,
                     cliente.telefono,
-                    `<button class="btn btn-warning btn-sm editar-cliente" data-id="${cliente.id_cliente}">Editar</button>
-                     <button class="btn btn-danger btn-sm eliminar-cliente" data-id="${cliente.id_cliente}">Eliminar</button>`
+                    `<button class="btn btn-warning btn-sm editar-cliente" data-id="${cliente.idCliente}">Editar</button>
+                     <button class="btn btn-danger btn-sm eliminar-cliente" data-id="${cliente.idCliente}">Eliminar</button>`
                 ]);
             });
             table.draw();
