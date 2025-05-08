@@ -19,7 +19,7 @@ public class Compra {
     @JoinColumn(name = "proveedor_id")
     private Proveedor proveedor;
 
-    @OneToMany(mappedBy = "compra",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "compra",cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CompraProducto> productos;
 
     public Compra() {}

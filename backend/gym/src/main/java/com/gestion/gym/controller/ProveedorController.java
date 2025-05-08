@@ -24,7 +24,7 @@ public class ProveedorController {
     }
 
     @GetMapping("/buscar/{id}")
-    public ResponseEntity<Proveedor> obtenerProveedorPorId(@RequestParam int id) {
+    public ResponseEntity<Proveedor> obtenerProveedorPorId(@PathVariable int id) {
         Optional<Proveedor> proveedor = proveedorService.obtenerPorId(id);
         return proveedor.map(value-> new ResponseEntity<>(value, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
@@ -35,7 +35,7 @@ public class ProveedorController {
         return new ResponseEntity<>(proveedorService.guardar(proveedor), HttpStatus.CREATED);
     }
 
-    @PutMapping("/actualizar")
+    @PutMapping("/actualizar/{id}")
     public ResponseEntity<Proveedor> actualizarProveedor(@PathVariable int id,@RequestBody Proveedor proveedor) {
         return proveedorService.obtenerPorId(id)
                 .map(proovedorExiste -> {

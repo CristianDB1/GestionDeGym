@@ -39,7 +39,7 @@ public class ClienteController {
     public ResponseEntity<Cliente> actualizarCliente(@PathVariable int id, @RequestBody Cliente cliente) {
         return clienteService.obtenerPorId(id)
                 .map(clienteExistente -> {
-                    cliente.setId_cliente(id);
+                    cliente.setIdCliente(id);
                     return new ResponseEntity<>(clienteService.guardar(cliente), HttpStatus.OK);
                 })
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));

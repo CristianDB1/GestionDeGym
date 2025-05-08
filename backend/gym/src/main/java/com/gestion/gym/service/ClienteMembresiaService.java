@@ -15,7 +15,7 @@ public class ClienteMembresiaService {
 
     public ClienteMembresia asignarMembresia(ClienteMembresia clienteMembresia) {
         // Validar si el cliente ya tiene la misma membresía activa
-        List<ClienteMembresia> membresiasActivas = clienteMembresiaRepository.findByCliente_IdCliente(clienteMembresia.getCliente().getId_cliente());
+        List<ClienteMembresia> membresiasActivas = clienteMembresiaRepository.findByCliente_IdCliente(clienteMembresia.getCliente().getIdCliente());
 
         for (ClienteMembresia cm : membresiasActivas) {
             if (cm.getMembresia().getId_membresia() == clienteMembresia.getMembresia().getId_membresia()) {

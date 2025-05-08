@@ -3,6 +3,7 @@ package com.gestion.gym.controller;
 import com.gestion.gym.model.Compra;
 import com.gestion.gym.service.CompraService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,9 +26,9 @@ public class CompraController {
         return ResponseEntity.ok(compraService.listarCompras());
     }
 
-    @PostMapping("/registrarCompra")
+    @PostMapping("/crear")
     public ResponseEntity<Compra> registrarCompra(@RequestBody Compra compra) {
-        Compra guardada = compraService.guardarCompra(compra);
-        return ResponseEntity.ok(guardada);
+        Compra nueva = compraService.guardarCompra(compra);
+        return ResponseEntity.status(HttpStatus.CREATED).body(nueva);
     }
 }

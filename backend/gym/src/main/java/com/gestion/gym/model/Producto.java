@@ -1,5 +1,7 @@
 package com.gestion.gym.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import java.util.List;
 
@@ -20,7 +22,8 @@ public class Producto {
     private List<VentaProducto> ventas;
 
     @ManyToOne
-    @JoinColumn(name = "id_proveedor")
+    @JoinColumn(name = "proveedor_id")
+    @JsonIgnoreProperties("productos") //  Esto evita loops y asegura que el proveedor se incluya
     private Proveedor proveedor;
 
     public Producto() {}
