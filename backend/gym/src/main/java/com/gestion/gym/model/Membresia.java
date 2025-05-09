@@ -1,7 +1,6 @@
 package com.gestion.gym.model;
 
 import jakarta.persistence.*;
-import java.util.List;
 
 @Entity
 @Table(name = "membresias")
@@ -15,18 +14,16 @@ public class Membresia {
     private double precio;
     private int duracionDias;
 
-    @OneToMany(mappedBy = "membresia", cascade = CascadeType.ALL)
-    private List<ClienteMembresia> clientes;
-
-    @OneToMany(mappedBy = "membresia", cascade = CascadeType.ALL)
-    private List<PagoMembresia> pagos;
+    private boolean activa;
 
     public Membresia() {}
 
-    public Membresia(String nombre, double precio, int duracionDias) {
+    public Membresia(int id_membresia, String nombre, double precio, int duracionDias, boolean activa) {
+        this.id_membresia = id_membresia;
         this.nombre = nombre;
         this.precio = precio;
         this.duracionDias = duracionDias;
+        this.activa = activa;
     }
 
     public int getId_membresia() {
@@ -61,19 +58,11 @@ public class Membresia {
         this.duracionDias = duracionDias;
     }
 
-    public List<ClienteMembresia> getClientes() {
-        return clientes;
+    public boolean isActiva() {
+        return activa;
     }
 
-    public void setClientes(List<ClienteMembresia> clientes) {
-        this.clientes = clientes;
-    }
-
-    public List<PagoMembresia> getPagos() {
-        return pagos;
-    }
-
-    public void setPagos(List<PagoMembresia> pagos) {
-        this.pagos = pagos;
+    public void setActiva(boolean activa) {
+        this.activa = activa;
     }
 }

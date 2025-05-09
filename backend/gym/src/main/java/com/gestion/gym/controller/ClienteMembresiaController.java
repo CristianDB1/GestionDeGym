@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/cliente-membresia")
+@RequestMapping("/api/membresiasCliente")
 @CrossOrigin(origins = "http://127.0.0.1:5500")
 public class ClienteMembresiaController {
 
@@ -18,12 +18,13 @@ public class ClienteMembresiaController {
     private ClienteMembresiaService clienteMembresiaService;
 
     @PostMapping("/asignar")
-    public ResponseEntity<ClienteMembresia> asignarMembresia(@RequestBody ClienteMembresia clienteMembresia) {
-        return new ResponseEntity<>(clienteMembresiaService.asignarMembresia(clienteMembresia), HttpStatus.CREATED);
+    public ResponseEntity<ClienteMembresia> asignar(@RequestParam int clienteId, @RequestParam int membresiaId) {
+        ClienteMembresia asignada = clienteMembresiaService.asignarMembresia(clienteId, membresiaId);
+        return ResponseEntity.status(HttpStatus.CREATED).body(asignada);
     }
 
     @GetMapping("/listar")
-    public ResponseEntity<List<ClienteMembresia>> obtenerTodas() {
-        return new ResponseEntity<>(clienteMembresiaService.obtenerTodas(), HttpStatus.OK);
+    public ResponseEntity<List<ClienteMembresia>> listar() {
+        return ResponseEntity.ok(clienteMembresiaService.listarTodas());
     }
 }

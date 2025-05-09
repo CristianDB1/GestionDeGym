@@ -1,5 +1,6 @@
 package com.gestion.gym.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 @Entity
@@ -8,34 +9,36 @@ public class VentaProducto {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private int id_venta_producto;
 
     @ManyToOne
-    @JoinColumn(name = "venta_id", nullable = false)
+    @JoinColumn(name = "venta_id")
+    @JsonBackReference
     private Venta venta;
 
     @ManyToOne
-    @JoinColumn(name = "producto_id", nullable = false)
+    @JoinColumn(name = "producto_id")
     private Producto producto;
 
     private int cantidad;
-    private double subtotal;
+    private double precio_unitario;
 
     public VentaProducto() {}
 
-    public VentaProducto(Venta venta, Producto producto, int cantidad, double subtotal) {
+    public VentaProducto(int id_venta_producto, Venta venta, Producto producto, int cantidad, double precio_unitario) {
+        this.id_venta_producto = id_venta_producto;
         this.venta = venta;
         this.producto = producto;
         this.cantidad = cantidad;
-        this.subtotal = subtotal;
+        this.precio_unitario = precio_unitario;
     }
 
-    public int getId() {
-        return id;
+    public int getId_venta_producto() {
+        return id_venta_producto;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setId_venta_producto(int id_venta_producto) {
+        this.id_venta_producto = id_venta_producto;
     }
 
     public Venta getVenta() {
@@ -62,11 +65,11 @@ public class VentaProducto {
         this.cantidad = cantidad;
     }
 
-    public double getSubtotal() {
-        return subtotal;
+    public double getPrecio_unitario() {
+        return precio_unitario;
     }
 
-    public void setSubtotal(double subtotal) {
-        this.subtotal = subtotal;
+    public void setPrecio_unitario(double precio_unitario) {
+        this.precio_unitario = precio_unitario;
     }
 }

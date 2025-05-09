@@ -1,7 +1,9 @@
 package com.gestion.gym.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import java.util.Date;
+
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -12,22 +14,19 @@ public class Venta {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id_venta;
 
-    @ManyToOne
-    @JoinColumn(name = "cliente_id", nullable = false)
-    private Cliente cliente;
+    private LocalDate fecha;
 
-    private Date fechaVenta;
-    private double total;
+    @OneToMany(mappedBy = "venta", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<VentaProducto> productos;
 
-    @OneToMany(mappedBy = "venta", cascade = CascadeType.ALL)
-    private List<VentaProducto> productosVendidos;
+    public Venta (){
+    }
 
-    public Venta() {}
-
-    public Venta(Cliente cliente, Date fechaVenta, double total) {
-        this.cliente = cliente;
-        this.fechaVenta = fechaVenta;
-        this.total = total;
+    public Venta(int id_venta, LocalDate fecha, List<VentaProducto> productos) {
+        this.id_venta = id_venta;
+        this.fecha = fecha;
+        this.productos = productos;
     }
 
     public int getId_venta() {
@@ -38,35 +37,19 @@ public class Venta {
         this.id_venta = id_venta;
     }
 
-    public Cliente getCliente() {
-        return cliente;
+    public LocalDate getFecha() {
+        return fecha;
     }
 
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
+    public void setFecha(LocalDate fecha) {
+        this.fecha = fecha;
     }
 
-    public Date getFechaVenta() {
-        return fechaVenta;
+    public List<VentaProducto> getProductos() {
+        return productos;
     }
 
-    public void setFechaVenta(Date fechaVenta) {
-        this.fechaVenta = fechaVenta;
-    }
-
-    public double getTotal() {
-        return total;
-    }
-
-    public void setTotal(double total) {
-        this.total = total;
-    }
-
-    public List<VentaProducto> getProductosVendidos() {
-        return productosVendidos;
-    }
-
-    public void setProductosVendidos(List<VentaProducto> productosVendidos) {
-        this.productosVendidos = productosVendidos;
+    public void setProductos(List<VentaProducto> productos) {
+        this.productos = productos;
     }
 }

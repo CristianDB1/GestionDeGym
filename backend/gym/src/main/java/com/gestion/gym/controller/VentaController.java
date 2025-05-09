@@ -17,19 +17,23 @@ public class VentaController {
     @Autowired
     private VentaService ventaService;
 
-    @GetMapping("/listar")
-    public ResponseEntity<List<Venta>> obtenerTodas() {
-        return new ResponseEntity<>(ventaService.obtenerTodas(), HttpStatus.OK);
-    }
-
     @PostMapping("/crear")
-    public ResponseEntity<Venta> crear(@RequestBody Venta venta) {
-        return new ResponseEntity<>(ventaService.guardar(venta), HttpStatus.CREATED);
+    public ResponseEntity<Venta> registrarVenta(@RequestBody Venta venta) {
+        Venta nueva = ventaService.guardarVenta(venta);
+        return ResponseEntity.status(HttpStatus.CREATED).body(nueva);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminar(@PathVariable int id) {
-        ventaService.eliminar(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    @GetMapping("/listar")
+    public ResponseEntity<List<Venta>> listarVentas() {
+        return ResponseEntity.ok(ventaService.listarVentas());
     }
+
+    @DeleteMapping("/eliminar/{id}")
+    public ResponseEntity<?> eliminarVenta(@PathVariable int id) {
+        return ventaService.eliminarVenta(id)
+                ? ResponseEntity.ok().build()
+                : ResponseEntity.notFound().build();
+    }
+
+
 }

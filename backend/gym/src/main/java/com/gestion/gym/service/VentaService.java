@@ -1,10 +1,13 @@
 package com.gestion.gym.service;
 
+import com.gestion.gym.model.Producto;
 import com.gestion.gym.model.Venta;
+import com.gestion.gym.model.VentaProducto;
+import com.gestion.gym.repository.ProductoRepository;
 import com.gestion.gym.repository.VentaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,19 +17,41 @@ public class VentaService {
     @Autowired
     private VentaRepository ventaRepository;
 
-    public List<Venta> obtenerTodas() {
-        return ventaRepository.findAll();
-    }
+    @Autowired
+    private ProductoRepository productoRepository;
 
-    public Optional<Venta> obtenerPorId(int id) {
-        return ventaRepository.findById(id);
-    }
+    public Venta guardarVenta(Venta venta) {
+        venta.setFecha(LocalDate.now());
 
-    public Venta guardar(Venta venta) {
+        for (VentaProducto vp : venta.getProductos()) {
+            Producto producto = productoRepository.findById(vp.getProducto().getId_producto())
+                    .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
+
+            if (producto.getStock() < vp.getCantidad()) {
+                throw new RuntimeException("Stock insuficiente para el producto: " + producto.getNombre());
+            }
+
+            producto.setStock(producto.getStock() - vp.getCantidad());
+            productoRepository.save(producto);
+
+            vp.setVenta(venta);
+        }
+
         return ventaRepository.save(venta);
     }
 
-    public void eliminar(int id) {
-        ventaRepository.deleteById(id);
+    public List<Venta> listarVentas() {
+        return ventaRepository.findAll();
     }
+
+    public boolean eliminarVenta(int id) {
+        Optional<Venta> ventaOpt = ventaRepository.findById(id);
+        if (ventaOpt.isPresent()) {
+            ventaRepository.delete(ventaOpt.get());
+            return true;
+        }
+        return false;
+    }
+
+
 }

@@ -1,32 +1,50 @@
 package com.gestion.gym.service;
 
+import com.gestion.gym.model.Cliente;
 import com.gestion.gym.model.ClienteMembresia;
+import com.gestion.gym.model.Membresia;
 import com.gestion.gym.repository.ClienteMembresiaRepository;
+import com.gestion.gym.repository.ClienteRepository;
+import com.gestion.gym.repository.MembresiaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
 public class ClienteMembresiaService {
 
     @Autowired
+    private ClienteRepository clienteRepository;
+
+    @Autowired
     private ClienteMembresiaRepository clienteMembresiaRepository;
 
-    public ClienteMembresia asignarMembresia(ClienteMembresia clienteMembresia) {
-        // Validar si el cliente ya tiene la misma membresía activa
-        List<ClienteMembresia> membresiasActivas = clienteMembresiaRepository.findByCliente_IdCliente(clienteMembresia.getCliente().getIdCliente());
+    @Autowired
+    private MembresiaRepository membresiaRepository;
 
-        for (ClienteMembresia cm : membresiasActivas) {
-            if (cm.getMembresia().getId_membresia() == clienteMembresia.getMembresia().getId_membresia()) {
-                throw new RuntimeException("El cliente ya tiene esta membresía activa.");
-            }
-        }
+    public ClienteMembresia asignarMembresia(int clienteId, int membresiaId) {
+        Membresia membresia = membresiaRepository.findById(membresiaId)
+                .orElseThrow(() -> new RuntimeException("Membresía no encontrada"));
 
-        return clienteMembresiaRepository.save(clienteMembresia);
+        Cliente cliente = clienteRepository.findById(clienteId)
+                .orElseThrow(() -> new RuntimeException("Cliente no encontrado"));
+
+        ClienteMembresia cm = new ClienteMembresia();
+        cm.setCliente(cliente);
+        cm.setMembresia(membresia);
+
+        LocalDate inicio = LocalDate.now();
+        LocalDate fin = inicio.plusDays(membresia.getDuracionDias());
+
+        cm.setFechaInicio(inicio);
+        cm.setFechaFin(fin);
+        cm.setActiva(true);
+
+        return clienteMembresiaRepository.save(cm);
     }
 
-    public List<ClienteMembresia> obtenerTodas() {
+    public List<ClienteMembresia> listarTodas() {
         return clienteMembresiaRepository.findAll();
     }
 }

@@ -15,7 +15,7 @@ public class CompraProducto {
     private Compra compra;
 
     @ManyToOne
-    @JoinColumn(name = "prodcuto_id")
+    @JoinColumn(name = "producto_id")
     private Producto producto;
 
     private int cantidad;

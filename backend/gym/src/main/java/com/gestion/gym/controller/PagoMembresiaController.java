@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/pago-membresia")
+@RequestMapping("/api/pagoMembresia")
 @CrossOrigin(origins = "http://127.0.0.1:5500")
 public class PagoMembresiaController {
 
@@ -18,12 +18,15 @@ public class PagoMembresiaController {
     private PagoMembresiaService pagoMembresiaService;
 
     @PostMapping("/registrar")
-    public ResponseEntity<PagoMembresia> registrarPago(@RequestBody PagoMembresia pagoMembresia) {
-        return new ResponseEntity<>(pagoMembresiaService.registrarPagoMembresia(pagoMembresia), HttpStatus.CREATED);
+    public ResponseEntity<PagoMembresia> registrar(
+            @RequestParam int clienteMembresiaId,
+            @RequestParam double monto) {
+        PagoMembresia pago = pagoMembresiaService.registrarPago(clienteMembresiaId, monto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(pago);
     }
 
     @GetMapping("/listar")
-    public ResponseEntity<List<PagoMembresia>> obtenerTodos() {
-        return new ResponseEntity<>(pagoMembresiaService.obtenerTodos(), HttpStatus.OK);
+    public ResponseEntity<List<PagoMembresia>> listar() {
+        return ResponseEntity.ok(pagoMembresiaService.listarPagos());
     }
 }

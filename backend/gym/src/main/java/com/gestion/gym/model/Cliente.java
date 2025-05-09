@@ -21,11 +21,17 @@ public class Cliente {
 
     public Cliente() {}
 
-    public Cliente(String nombre, String apellido, String email, String telefono) {
+    public Cliente(int id_cliente) {
+        this.idCliente = id_cliente;
+    }
+
+    public Cliente(int idCliente, String nombre, String apellido, String email, String telefono, List<ClienteMembresia> membresias) {
+        this.idCliente = idCliente;
         this.nombre = nombre;
         this.apellido = apellido;
         this.email = email;
         this.telefono = telefono;
+        this.membresias = membresias;
     }
 
     public int getIdCliente() {

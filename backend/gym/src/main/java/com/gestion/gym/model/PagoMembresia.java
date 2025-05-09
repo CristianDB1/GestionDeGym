@@ -2,51 +2,61 @@ package com.gestion.gym.model;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
+
 @Entity
 @Table(name = "pago_membresia")
 public class PagoMembresia {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private int id_pago_membresia;
 
     @ManyToOne
-    @JoinColumn(name = "pago_id")
-    private Pago pago;
+    @JoinColumn(name = "cliente_membresia_id")
+    private ClienteMembresia clienteMembresia;
 
-    @ManyToOne
-    @JoinColumn(name = "membresia_id")
-    private Membresia membresia;
+    private LocalDate fechaPago;
+    private double monto;
 
-    public PagoMembresia() {
+    public PagoMembresia(){}
+
+    public PagoMembresia(int id_pago_membresia, ClienteMembresia clienteMembresia, LocalDate fechaPago, double monto) {
+        this.id_pago_membresia = id_pago_membresia;
+        this.clienteMembresia = clienteMembresia;
+        this.fechaPago = fechaPago;
+        this.monto = monto;
     }
 
-    public PagoMembresia(Pago pago, Membresia membresia) {
-        this.pago = pago;
-        this.membresia = membresia;
+    public int getId_pago_membresia() {
+        return id_pago_membresia;
     }
 
-    public int getId() {
-        return id;
+    public void setId_pago_membresia(int id_pago_membresia) {
+        this.id_pago_membresia = id_pago_membresia;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public ClienteMembresia getClienteMembresia() {
+        return clienteMembresia;
     }
 
-    public Pago getPago() {
-        return pago;
+    public void setClienteMembresia(ClienteMembresia clienteMembresia) {
+        this.clienteMembresia = clienteMembresia;
     }
 
-    public void setPago(Pago pago) {
-        this.pago = pago;
+    public LocalDate getFechaPago() {
+        return fechaPago;
     }
 
-    public Membresia getMembresia() {
-        return membresia;
+    public void setFechaPago(LocalDate fechaPago) {
+        this.fechaPago = fechaPago;
     }
 
-    public void setMembresia(Membresia membresia) {
-        this.membresia = membresia;
+    public double getMonto() {
+        return monto;
+    }
+
+    public void setMonto(double monto) {
+        this.monto = monto;
     }
 }

@@ -1,6 +1,6 @@
 package com.gestion.gym.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import java.util.List;
@@ -19,6 +19,7 @@ public class Producto {
     private int stock;
 
     @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<VentaProducto> ventas;
 
     @ManyToOne
