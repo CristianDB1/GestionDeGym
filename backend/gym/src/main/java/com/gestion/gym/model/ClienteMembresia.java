@@ -1,9 +1,10 @@
 package com.gestion.gym.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
-import java.util.Date;
+
 
 @Entity
 @Table(name = "cliente_membresia")
@@ -15,6 +16,7 @@ public class ClienteMembresia {
 
     @ManyToOne
     @JoinColumn(name = "cliente_id")
+    @JsonIgnoreProperties("membresias")
     private Cliente cliente;
 
     @ManyToOne()

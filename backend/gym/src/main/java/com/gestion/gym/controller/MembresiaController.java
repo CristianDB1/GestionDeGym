@@ -23,7 +23,7 @@ public class MembresiaController {
         return new ResponseEntity<>(membresiaService.obtenerTodas(), HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/buscar/{id}")
     public ResponseEntity<Membresia> obtenerPorId(@PathVariable int id) {
         Optional<Membresia> membresia = membresiaService.obtenerPorId(id);
         return membresia.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
@@ -35,7 +35,7 @@ public class MembresiaController {
         return new ResponseEntity<>(membresiaService.guardar(membresia), HttpStatus.CREATED);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/actualizar/{id}")
     public ResponseEntity<Membresia> actualizar(@PathVariable int id, @RequestBody Membresia membresia) {
         return membresiaService.obtenerPorId(id)
                 .map(m -> {
@@ -45,7 +45,7 @@ public class MembresiaController {
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/eliminar/{id}")
     public ResponseEntity<Void> eliminar(@PathVariable int id) {
         return membresiaService.obtenerPorId(id)
                 .map(m -> {

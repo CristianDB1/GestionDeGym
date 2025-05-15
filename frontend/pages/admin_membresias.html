@@ -40,42 +40,81 @@
         
          <!-- Contenido -->
     <div class="container-fluid p-4" id="content">
-        <h2>Asignar Membresía a Cliente</h2>
-        <form id="membresiaForm" class="row g-3">
-          <div class="col-md-5">
-            <label for="clienteSelect" class="form-label">Cliente</label>
-            <select id="clienteSelect" class="form-select" required></select>
-          </div>
-  
-          <div class="col-md-5">
-            <label for="membresiaSelect" class="form-label">Membresía</label>
-            <select id="membresiaSelect" class="form-select" required></select>
-          </div>
-  
-          <div class="col-md-2 align-self-end">
-            <button type="submit" class="btn btn-primary w-100">Asignar</button>
-          </div>
-        </form>
-  
-        <hr>
-        <div class="mt-4">
-          <h4>Pagos de Membresía</h4>
-          <table id="tablaMembresias" class="table table-bordered display">
-            <thead class="table-dark">
+      <h2>Asignación de Membresía a Cliente</h2>
+
+      <!-- Formulario de asignación -->
+      <form id="membresiaForm" class="row g-3 mb-4">
+        <div class="col-md-6">
+          <label for="clienteSelect" class="form-label">Cliente</label>
+          <select id="clienteSelect" class="form-select" required></select>
+        </div>
+        <div class="col-md-6">
+          <label for="membresiaSelect" class="form-label">Membresía</label>
+          <select id="membresiaSelect" class="form-select" required></select>
+        </div>
+        <div class="col-12">
+          <button type="submit" class="btn btn-primary">Asignar Membresía</button>
+        </div>
+      </form>
+
+      <!-- Tabla de membresías asignadas -->
+      <table id="tablaMembresias" class="table table-bordered table-striped">
+        <thead class="table-dark text-center">
+          <tr>
+            <th>Cliente</th>
+            <th>Membresía</th>
+            <th>Inicio</th>
+            <th>Fin</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+        <tbody class="text-center"></tbody>
+      </table>
+
+      <hr class="my-4">
+
+      <div class="card shadow">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+          <h5 class="mb-0">Gestión de Planes de Membresía</h5>
+          <!-- <button class="btn btn-sm btn-light" onclick="resetFormularioMembresia()">Nueva Membresía</button> -->
+        </div>
+        <div class="card-body">
+          <!-- Formulario de creación/edición -->
+          <form id="crearMembresiaForm" class="row g-3 mb-4">
+            <div class="col-md-4">
+              <label for="nombreMembresia" class="form-label">Nombre</label>
+              <input type="text" class="form-control" id="nombreMembresia" required>
+            </div>
+            <div class="col-md-4">
+              <label for="precioMembresia" class="form-label">Precio</label>
+              <input type="number" class="form-control" id="precioMembresia" step="0.01" required>
+            </div>
+            <div class="col-md-4">
+              <label for="duracionMembresia" class="form-label">Duración (días)</label>
+              <input type="number" class="form-control" id="duracionMembresia" required>
+            </div>
+            <div class="col-12">
+              <button type="submit" class="btn btn-success">Guardar Membresía</button>
+            </div>
+          </form>
+
+          <!-- Tabla de planes -->
+          <table id="tablaGestionMembresias" class="table table-bordered table-striped">
+            <thead class="table-dark text-center">
               <tr>
-                <th>Cliente</th>
-                <th>Membresía</th>
-                <th>Inicio</th>
-                <th>Fin</th>
+                <th>Nombre</th>
+                <th>Precio</th>
+                <th>Duración</th>
                 <th>Estado</th>
+                <th>Acciones</th>
               </tr>
             </thead>
-            <tbody></tbody>
+            <tbody class="text-center"></tbody>
           </table>
         </div>
       </div>
     </div>
-
+  
     <script>
         function loadSection(section) {
             document.getElementById('content').innerHTML = `<h2>${section}</h2><p>Contenido de ${section} en construcción...</p>`;
@@ -94,11 +133,11 @@
             document.getElementById("username").textContent = payload.sub || "Usuario";
         });
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
     <script src="../js/logout.js"></script>
     <script src="../js/admin-membresia.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
