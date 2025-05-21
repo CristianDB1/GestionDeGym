@@ -62,8 +62,17 @@ document.addEventListener("DOMContentLoaded", function () {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify(cliente)
+            })
+            .then(async response => {
+            if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(`Error al guardar cliente. Status: ${response.status} - ${errorText}`);
+        }
+
+        if (response.status === 204) return null;
+
+        return response.json();
         })
-        .then(response => response.json())
         .then(() => {
             document.getElementById("clienteForm").reset(); // Limpiar formulario
             document.getElementById("clienteId").value = "";
@@ -88,7 +97,7 @@ document.addEventListener("DOMContentLoaded", function () {
         })
         .then(response => response.json())
         .then(cliente => {
-            document.getElementById("clienteId").value = cliente.id_cliente;
+            document.getElementById("clienteId").value = cliente.idCliente;
             document.getElementById("nombre").value = cliente.nombre;
             document.getElementById("apellido").value = cliente.apellido;
             document.getElementById("email").value = cliente.email;
