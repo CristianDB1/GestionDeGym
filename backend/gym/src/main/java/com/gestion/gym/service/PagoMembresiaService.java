@@ -6,7 +6,6 @@ import com.gestion.gym.repository.ClienteMembresiaRepository;
 import com.gestion.gym.repository.PagoMembresiaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDate;
 import java.util.List;
 

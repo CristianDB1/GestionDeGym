@@ -1,6 +1,8 @@
 package com.gestion.gym.controller;
 
+import com.gestion.gym.model.Rol;
 import com.gestion.gym.model.Usuario;
+import com.gestion.gym.service.RolService;
 import com.gestion.gym.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/usuarios")
@@ -38,16 +41,35 @@ public class UsuariosController {
     }
 
     @PostMapping("/crear")
-    public ResponseEntity<?> crearUsuario(@RequestBody Usuario usuario) {
+    public ResponseEntity<?> crearUsuarioDesdeAdmin(@RequestBody Map<String, Object> payload) {
         try {
-            usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
+            String nombre = (String) payload.get("nombre");
+            String apellido = (String) payload.get("apellido");
+            String username = (String) payload.get("username");
+            String password = (String) payload.get("password");
+            Integer rolId = (Integer) payload.get("rol_id");
 
-            Usuario nuevoUsuario = usuarioService.guardar(usuario);
-            return ResponseEntity.status(HttpStatus.CREATED).body(nuevoUsuario);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+            if (password == null || password.trim().isEmpty()) {
+                return ResponseEntity.badRequest().body("La contraseña no puede estar vacía.");
+            }
+
+            Rol rol = RolService.obtenerPorId(rolId)
+                    .orElseThrow(() -> new IllegalArgumentException("Rol no encontrado"));
+
+            Usuario nuevo = new Usuario();
+            nuevo.setNombre(nombre);
+            nuevo.setApellido(apellido);
+            nuevo.setUsername(username);
+            nuevo.setPassword(passwordEncoder.encode(password));
+            nuevo.setRol(rol);
+
+            return ResponseEntity.status(HttpStatus.CREATED).body(usuarioService.guardar(nuevo));
+
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error: " + e.getMessage());
         }
     }
+
 
     @PutMapping("/actualizar/{id}")
     public ResponseEntity<?> actualizarUsuario(@PathVariable int id, @RequestBody Usuario usuario) {

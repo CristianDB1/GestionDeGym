@@ -2,7 +2,6 @@ package com.gestion.gym.model;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-
 import java.time.LocalDate;
 import java.util.List;
 

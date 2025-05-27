@@ -1,5 +1,3 @@
-// admin-membresias.js
-
 function authHeader() {
   return {
     headers: {
@@ -9,7 +7,6 @@ function authHeader() {
   };
 }
 
-// ===================== CLIENTES =====================
 function cargarClientes() {
   fetch("http://localhost:8080/api/clientes/listar", authHeader())
     .then(res => res.json())
@@ -26,8 +23,6 @@ function cargarClientes() {
       $('#clienteSelect').select2({ placeholder: "Buscar cliente..." });
     });
 }
-
-// ===================== MEMBRESÍAS =====================
 
 function cargarMembresiasSelect() {
   fetch("http://localhost:8080/api/membresias/listar", authHeader())
@@ -118,27 +113,21 @@ function resetFormularioMembresia() {
   delete form.dataset.editandoId;
 }
 
-// ===================== EVENTOS =====================
-
 document.addEventListener("DOMContentLoaded", () => {
-  // Inicializar DataTables
   $('#tablaMembresias').DataTable();
   $('#tablaGestionMembresias').DataTable();
 
-  // Cargar combos y tablas
   cargarClientes();
   cargarMembresiasSelect();
   cargarMembresiasAsignadas();
   cargarMembresiasGestion();
 
-  // Mostrar nombre de usuario
   const token = localStorage.getItem("token");
   if (token) {
     const payload = JSON.parse(atob(token.split(".")[1]));
     document.getElementById("username").textContent = payload.sub;
   }
 
-  // Asignar membresía
   document.getElementById("membresiaForm").addEventListener("submit", function (e) {
   e.preventDefault();
 
@@ -148,7 +137,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const clienteId = clienteSelect?.value?.trim();
   const membresiaId = membresiaSelect?.value?.trim();
 
-  // Validaciones
   if (!clienteId || clienteId === "") {
     alert("Debe seleccionar un cliente válido.");
     clienteSelect.focus();
@@ -161,10 +149,8 @@ document.addEventListener("DOMContentLoaded", () => {
     return;
   }
 
-  // Confirmación opcional
   if (!confirm("¿Desea asignar esta membresía al cliente?")) return;
 
-  // Realizar el fetch
   fetch(`http://localhost:8080/api/membresiasCliente/asignar?clienteId=${clienteId}&membresiaId=${membresiaId}`, {
     method: "POST",
     ...authHeader()
@@ -186,8 +172,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
-
-  // Crear/editar membresía
   document.getElementById("crearMembresiaForm").addEventListener("submit", function (e) {
     e.preventDefault();
     const nombre = document.getElementById("nombreMembresia").value;

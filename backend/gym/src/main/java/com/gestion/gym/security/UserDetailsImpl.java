@@ -3,7 +3,6 @@ package com.gestion.gym.security;
 import com.gestion.gym.model.Usuario;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import java.util.Collection;
 import java.util.Collections;
 

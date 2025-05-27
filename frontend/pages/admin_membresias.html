@@ -11,7 +11,6 @@
 
 </head>
 <body>
-    <!-- Navbar -->
     <nav class="navbar navbar-dark bg-dark px-3 d-flex justify-content-between">
         <a class="navbar-brand" href="#">Gestión de Gimnasio - membresias</a>
         <div class="dropdown">
@@ -25,7 +24,6 @@
     </nav>
 
     <div class="d-flex">
-        <!-- Sidebar -->
         <div class="bg-light border-end vh-100" id="sidebar">
             <ul class="list-group list-group-flush">
                 <li class="list-group-item"><a href="/pages/admin_clientes.html" onclick="loadSection('clientes')">Clientes</a></li>
@@ -37,12 +35,10 @@
                 <li class="list-group-item"><a href="/pages/admin_reportes.html" onclick="loadSection('reportes')">Reportes</a></li>
             </ul>
         </div>
-        
-         <!-- Contenido -->
+
     <div class="container-fluid p-4" id="content">
       <h2>Asignación de Membresía a Cliente</h2>
 
-      <!-- Formulario de asignación -->
       <form id="membresiaForm" class="row g-3 mb-4">
         <div class="col-md-6">
           <label for="clienteSelect" class="form-label">Cliente</label>
@@ -57,7 +53,6 @@
         </div>
       </form>
 
-      <!-- Tabla de membresías asignadas -->
       <table id="tablaMembresias" class="table table-bordered table-striped">
         <thead class="table-dark text-center">
           <tr>
@@ -76,10 +71,8 @@
       <div class="card shadow">
         <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
           <h5 class="mb-0">Gestión de Planes de Membresía</h5>
-          <!-- <button class="btn btn-sm btn-light" onclick="resetFormularioMembresia()">Nueva Membresía</button> -->
         </div>
         <div class="card-body">
-          <!-- Formulario de creación/edición -->
           <form id="crearMembresiaForm" class="row g-3 mb-4">
             <div class="col-md-4">
               <label for="nombreMembresia" class="form-label">Nombre</label>
@@ -98,7 +91,6 @@
             </div>
           </form>
 
-          <!-- Tabla de planes -->
           <table id="tablaGestionMembresias" class="table table-bordered table-striped">
             <thead class="table-dark text-center">
               <tr>
@@ -124,11 +116,10 @@
             const token = localStorage.getItem("token");
 
             if (!token) {
-                window.location.href = "../index.html"; // Redirigir al login si no hay token
+                window.location.href = "../index.html"; 
                 return;
             }
 
-            // Decodificar el token para obtener el nombre de usuario
             const payload = JSON.parse(atob(token.split(".")[1]));
             document.getElementById("username").textContent = payload.sub || "Usuario";
         });

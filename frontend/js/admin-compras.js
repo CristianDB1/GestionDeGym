@@ -91,7 +91,6 @@ document.getElementById("agregarProducto").addEventListener("click", () => {
   renderTabla();
 });
 
-// Enviar compra al backend
 document.getElementById("guardarCompra").addEventListener("click", () => {
   const proveedorSelect = document.getElementById("proveedorSelect");
   const proveedorId = parseInt(proveedorSelect.value);

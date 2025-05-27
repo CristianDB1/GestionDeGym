@@ -1,197 +1,141 @@
 document.addEventListener("DOMContentLoaded", function () {
-  const API_USUARIOS = "http://localhost:8080/api/usuarios";
-  const API_AUTH = "http://localhost:8080/api/auth";
-  const token = localStorage.getItem("token");
+  const API_URL = "http://localhost:8080/api/usuarios";
+  const table = new DataTable("#recepcionistasTable");
 
-  const tabla = new DataTable("#tablaRecepcionistas");
-  let modoEdicion = false;
-  let idRecepcionistaEditando = null;
-
-  if (!token) {
-    alert("No hay token. Inicie sesión.");
-    window.location.href = "../index.html";
-    return;
-  }
-
-  function authHeaders() {
+  function authHeader() {
     return {
-      "Authorization": `Bearer ${token}`,
+      "Authorization": `Bearer ${localStorage.getItem("token")}`,
       "Content-Type": "application/json"
     };
   }
 
   function cargarRecepcionistas() {
-    fetch(`${API_USUARIOS}/listar`, {
-      method: "GET",
-      headers: authHeaders()
-    })
-      .then(response => {
-        if (!response.ok) throw new Error("Error en la solicitud");
-        return response.json();
-      })
-      .then(usuarios => {
-        tabla.clear();
-        usuarios
-          .filter(u => u.rol?.nombre === "RECEPCIONISTA")
+    fetch(`${API_URL}/listar`, { headers: authHeader() })
+      .then(res => res.json())
+      .then(data => {
+        table.clear();
+        data
+          .filter(usuario => usuario.rol.nombre === "RECEPCIONISTA")
           .forEach(usuario => {
-            tabla.row.add([
+            table.row.add([
               usuario.id_usuario,
               usuario.nombre,
               usuario.apellido,
               usuario.username,
               usuario.rol.nombre,
               `
-                <button class="btn btn-warning btn-sm editar" data-id="${usuario.id_usuario}">Editar</button>
-                <button class="btn btn-danger btn-sm eliminar" data-id="${usuario.id_usuario}">Eliminar</button>
+              <button class="btn btn-warning btn-sm editar-btn" data-id="${usuario.id_usuario}">Editar</button>
+              <button class="btn btn-danger btn-sm eliminar-btn" data-id="${usuario.id_usuario}">Eliminar</button>
               `
             ]);
           });
-        tabla.draw();
+        table.draw();
       })
-      .catch(err => console.error("Error al cargar recepcionistas:", err));
+      .catch(err => {
+        console.error("Error al cargar recepcionistas:", err);
+      });
   }
 
   function limpiarFormulario() {
     document.getElementById("recepcionistaForm").reset();
     document.getElementById("recepcionistaId").value = "";
-    modoEdicion = false;
-    idRecepcionistaEditando = null;
   }
 
-  function crearRecepcionista(usuario) {
-    fetch(`${API_AUTH}/crear`, {
+  function abrirModalCrear() {
+    limpiarFormulario();
+    document.getElementById("modalTitle").textContent = "Crear Recepcionista";
+    document.getElementById("guardarBtn").textContent = "Registrar";
+    $("#recepcionistaModal").modal("show");
+  }
+
+  async function crearRecepcionista(data) {
+    const response = await fetch(`${API_URL}/crear`, {
       method: "POST",
-      headers: authHeaders(),
-      body: JSON.stringify(usuario)
-    })
-      .then(res => {
-        if (!res.ok) throw new Error("Error al crear recepcionista");
-        return res.json();
-      })
-      .then(() => {
-        $("#recepcionistaModal").modal("hide");
-        cargarRecepcionistas();
-      })
-      .catch(err => {
-        console.error("Error en creación:", err);
-        alert("Error al crear recepcionista");
-      });
+      headers: authHeader(),
+      body: JSON.stringify({ ...data, rol_id: 2 }) 
+    });
+
+    if (!response.ok) throw new Error("Error al crear recepcionista");
+    return response.json();
   }
 
-  function actualizarRecepcionista(id, usuario) {
-    fetch(`${API_USUARIOS}/actualizar/${id}`, {
+  async function actualizarRecepcionista(id, data) {
+    const response = await fetch(`${API_URL}/actualizar/${id}`, {
       method: "PUT",
-      headers: authHeaders(),
-      body: JSON.stringify(usuario)
-    })
-      .then(res => {
-        if (!res.ok) throw new Error("Error al actualizar recepcionista");
-        return res.json();
-      })
-      .then(() => {
-        $("#recepcionistaModal").modal("hide");
-        cargarRecepcionistas();
-      })
-      .catch(err => {
-        console.error("Error en actualización:", err);
-        alert("Error al actualizar recepcionista");
-      });
+      headers: authHeader(),
+      body: JSON.stringify(data)
+    });
+
+    if (!response.ok) throw new Error("Error al actualizar recepcionista");
+    return response.json();
   }
 
   function guardarRecepcionista(event) {
     event.preventDefault();
 
-    const nombre = document.getElementById("nombre").value.trim();
-    const apellido = document.getElementById("apellido").value.trim();
-    const username = document.getElementById("username").value.trim();
-    const password = document.getElementById("password").value;
+    const id = document.getElementById("recepcionistaId").value.trim();
+    const data = {
+      nombre: document.getElementById("userNombre").value,
+      apellido: document.getElementById("userApellido").value,
+      username: document.getElementById("userUsername").value,
+      password: document.getElementById("userPassword").value
+    };
 
-    if (!nombre || !apellido || !username || (!modoEdicion && !password)) {
-      alert("Todos los campos son obligatorios. La contraseña solo se requiere para crear.");
-      return;
-    }
+    const accion = id
+      ? actualizarRecepcionista(id, data)
+      : crearRecepcionista(data);
 
-    if (modoEdicion && !idRecepcionistaEditando) {
-      alert("Error interno: no se encontró el ID a editar.");
-      return;
-    }
-
-    if (modoEdicion) {
-      const usuarioActualizado = {
-        nombre,
-        apellido,
-        username,
-        password,
-        rol: { id: 2 }
-      };
-      actualizarRecepcionista(idRecepcionistaEditando, usuarioActualizado);
-    } else {
-      const nuevoUsuario = {
-        nombre,
-        apellido,
-        username,
-        password,
-        rol_id: 2
-      };
-      crearRecepcionista(nuevoUsuario);
-    }
-
-    limpiarFormulario();
+    accion
+      .then(() => {
+        $("#recepcionistaModal").modal("hide");
+        limpiarFormulario();
+        cargarRecepcionistas();
+      })
+      .catch(error => {
+        console.error("Error en operación:", error);
+        alert("Ocurrió un error al guardar el recepcionista");
+      });
   }
 
-  function cargarRecepcionistaParaEditar(id) {
-    fetch(`${API_USUARIOS}/buscar/${id}`, {
-      method: "GET",
-      headers: authHeaders()
-    })
+  function cargarRecepcionistaEnFormulario(id) {
+    fetch(`${API_URL}/buscar/${id}`, { headers: authHeader() })
       .then(res => res.json())
       .then(usuario => {
         document.getElementById("recepcionistaId").value = usuario.id_usuario;
-        document.getElementById("nombre").value = usuario.nombre;
-        document.getElementById("apellido").value = usuario.apellido;
-        document.getElementById("username").value = usuario.username;
-        document.getElementById("password").value = "";
+        document.getElementById("userNombre").value = usuario.nombre;
+        document.getElementById("userApellido").value = usuario.apellido;
+        document.getElementById("userUsername").value = usuario.username;
+        document.getElementById("userPassword").value = ""; 
 
-        modoEdicion = true;
-        idRecepcionistaEditando = usuario.id;
-
+        document.getElementById("modalTitle").textContent = "Editar Recepcionista";
+        document.getElementById("guardarBtn").textContent = "Actualizar";
         $("#recepcionistaModal").modal("show");
       })
-      .catch(err => {
-        console.error("Error al cargar recepcionista:", err);
-        alert("No se pudo cargar el usuario.");
-      });
+      .catch(err => console.error("Error al cargar usuario:", err));
   }
 
   function eliminarRecepcionista(id) {
     if (!confirm("¿Seguro que deseas eliminar este usuario?")) return;
 
-    fetch(`${API_USUARIOS}/eliminar/${id}`, {
+    fetch(`${API_URL}/eliminar/${id}`, {
       method: "DELETE",
-      headers: authHeaders()
+      headers: authHeader()
     })
       .then(res => {
         if (!res.ok) throw new Error("Error al eliminar");
         cargarRecepcionistas();
       })
-      .catch(err => {
-        console.error("Error al eliminar:", err);
-        alert("Error al eliminar usuario");
-      });
+      .catch(err => console.error("Error al eliminar recepcionista:", err));
   }
 
-  // Listeners
-  document.getElementById("btnNuevoRecepcionista").addEventListener("click", function () {
-    limpiarFormulario();
-    $("#recepcionistaModal").modal("show");
-  });
-
+  document.getElementById("nuevoBtn").addEventListener("click", abrirModalCrear);
   document.getElementById("recepcionistaForm").addEventListener("submit", guardarRecepcionista);
 
   document.addEventListener("click", function (e) {
-    if (e.target.classList.contains("editar")) {
-      cargarRecepcionistaParaEditar(e.target.dataset.id);
-    } else if (e.target.classList.contains("eliminar")) {
+    if (e.target.classList.contains("editar-btn")) {
+      cargarRecepcionistaEnFormulario(e.target.dataset.id);
+    }
+    if (e.target.classList.contains("eliminar-btn")) {
       eliminarRecepcionista(e.target.dataset.id);
     }
   });

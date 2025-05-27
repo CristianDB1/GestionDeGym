@@ -31,7 +31,6 @@ document.addEventListener("DOMContentLoaded", function() {
             localStorage.setItem("token", data.token);
             localStorage.setItem("role", data.role);
 
-            // Evitar que el usuario regrese al login después de iniciar sesión
             history.replaceState(null, null, window.location.href);
 
             if (data.role === "ADMIN") {

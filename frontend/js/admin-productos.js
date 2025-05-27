@@ -1,9 +1,6 @@
-// admin-productos.js
-
 let table;
 let tableProveedores;
 
-// Al cargar el documento
 document.addEventListener("DOMContentLoaded", function () {
     table = new DataTable("#productosTable");
     tableProveedores = new DataTable("#proveedoresTable");

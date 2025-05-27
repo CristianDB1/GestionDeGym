@@ -74,7 +74,7 @@ document.addEventListener("DOMContentLoaded", function () {
         return response.json();
         })
         .then(() => {
-            document.getElementById("clienteForm").reset(); // Limpiar formulario
+            document.getElementById("clienteForm").reset();
             document.getElementById("clienteId").value = "";
             $("#clienteModal").modal("hide");
             loadClientes();

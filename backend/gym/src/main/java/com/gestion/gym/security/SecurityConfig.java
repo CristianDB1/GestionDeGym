@@ -14,7 +14,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.cors.CorsConfigurationSource;
-
 import java.util.List;
 
 @Configuration
@@ -35,8 +34,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/login").permitAll()
-                        //.requestMatchers("/api/auth/crear").hasAuthority("ADMIN")
-                        //.requestMatchers("/api/usuarios/**").hasAuthority("ADMIN")
+                        .requestMatchers("/api/usuarios/").hasAuthority("ADMIN")
                         .requestMatchers("/api/ADMIN/**").hasAuthority("ADMIN")
                         .requestMatchers("/api/RECEPCIONISTA/**").hasAuthority("RECEPCIONISTA")
                         .anyRequest().authenticated()

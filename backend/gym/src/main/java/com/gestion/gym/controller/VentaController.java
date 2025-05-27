@@ -34,6 +34,4 @@ public class VentaController {
                 ? ResponseEntity.ok().build()
                 : ResponseEntity.notFound().build();
     }
-
-
 }

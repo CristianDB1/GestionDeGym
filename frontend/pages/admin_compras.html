@@ -10,7 +10,6 @@
     <link rel="stylesheet" href="../css/admin-compras.css">
 </head>
 <body>
-<!-- NAVBAR -->
 <nav class="navbar navbar-dark bg-dark px-3 d-flex justify-content-between">
     <a class="navbar-brand" href="#">Gestión de Gimnasio - Compras</a>
     <div class="dropdown">
@@ -23,9 +22,7 @@
     </div>
 </nav>
 
-<!-- CONTENIDO -->
 <div class="d-flex">
-    <!-- SIDEBAR -->
     <div class="bg-light border-end vh-100" id="sidebar">
         <ul class="list-group list-group-flush">
             <li class="list-group-item"><a href="/pages/admin_clientes.html" onclick="loadSection('clientes')">Clientes</a></li>
@@ -38,12 +35,10 @@
         </ul>
     </div>
 
-    <!-- MAIN CONTENT -->
     <div class="container p-4" id="content">
         <h2 class="mb-4">Registrar Compra</h2>
 
         <form id="compraForm">
-            <!-- Selección de proveedor -->
             <div class="row mb-3">
                 <div class="col-md-6">
                     <label for="proveedorSelect" class="form-label">Proveedor</label>
@@ -53,7 +48,6 @@
                 </div>
             </div>
 
-            <!-- Agregar producto -->
             <div class="row g-2 align-items-end mb-3">
                 <div class="col-md-4">
                     <label for="productoSelect" class="form-label">Producto</label>
@@ -73,7 +67,7 @@
             </div>
         </form>
 
-        <!-- Tabla de productos agregados -->
+       
         <div class="table-responsive mb-3">
             <table id="tablaCompra" class="table table-bordered">
                 <thead>
@@ -100,7 +94,6 @@
     </div>
 </div>
 
-<!-- SCRIPTS -->
 <script>
     function loadSection(section) {
         document.getElementById('content').innerHTML = `<h2>${section}</h2><p>Contenido de ${section} en construcción...</p>`;
@@ -110,11 +103,10 @@
         const token = localStorage.getItem("token");
 
         if (!token) {
-            window.location.href = "../index.html"; // Redirigir al login si no hay token
+            window.location.href = "../index.html"; 
             return;
         }
 
-        // Decodificar el token para obtener el nombre de usuario
         const payload = JSON.parse(atob(token.split(".")[1]));
         document.getElementById("username").textContent = payload.sub || "Usuario";
     });

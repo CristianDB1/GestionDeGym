@@ -1,7 +1,6 @@
 package com.gestion.gym.model;
 
 import jakarta.persistence.*;
-
 import java.util.List;
 
 @Entity

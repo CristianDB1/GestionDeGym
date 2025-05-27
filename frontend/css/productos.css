@@ -11,7 +11,6 @@ button.btn-primary:hover {
     background-color: #0056b3;
 }
 
-/* Ajustes para DataTable */
 .dataTables_wrapper .dataTables_filter input {
     border-radius: 5px;
     border: 1px solid #ced4da;

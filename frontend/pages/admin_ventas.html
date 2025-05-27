@@ -9,7 +9,6 @@
     
 </head>
 <body>
-    <!-- Navbar -->
     <nav class="navbar navbar-dark bg-dark px-3 d-flex justify-content-between">
         <a class="navbar-brand" href="#">Gestión de Gimnasio - ventas</a>
         <div class="dropdown">
@@ -23,7 +22,6 @@
     </nav>
 
     <div class="d-flex">
-        <!-- Sidebar -->
         <div class="bg-light border-end vh-100" id="sidebar">
             <ul class="list-group list-group-flush">
                 <li class="list-group-item"><a href="/pages/admin_clientes.html" onclick="loadSection('clientes')">Clientes</a></li>
@@ -36,11 +34,8 @@
             </ul>
         </div>
         
-     <!-- Contenido -->
      <div class="container-fluid p-4" id="content">
         <h2>Registrar Venta</h2>
-  
-        <!-- Formulario -->
         <form id="ventaForm">
           <div class="row g-3">
             <div class="col-md-6">
@@ -66,7 +61,6 @@
   
         <hr>
   
-        <!-- Tabla de venta -->
         <div class="table-responsive mt-3">
           <table class="table table-bordered" id="tablaVenta">
             <thead class="table-dark">
@@ -98,11 +92,10 @@
             const token = localStorage.getItem("token");
 
             if (!token) {
-                window.location.href = "../index.html"; // Redirigir al login si no hay token
+                window.location.href = "../index.html"; 
                 return;
             }
 
-            // Decodificar el token para obtener el nombre de usuario
             const payload = JSON.parse(atob(token.split(".")[1]));
             document.getElementById("username").textContent = payload.sub || "Usuario";
         });

@@ -4,7 +4,6 @@ import com.gestion.gym.model.Rol;
 import com.gestion.gym.repository.RolRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -31,7 +30,6 @@ public class RolService {
 
     @Transactional
     public Rol guardar(Rol rol) {
-        // Verificar si ya existe un rol con el mismo nombre
         if (rolRepository.existsByNombre(rol.getNombre())) {
             throw new IllegalArgumentException("El rol con nombre '" + rol.getNombre() + "' ya existe.");
         }

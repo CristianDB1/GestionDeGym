@@ -9,7 +9,6 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-    <!-- Navbar -->
     <nav class="navbar navbar-dark bg-dark px-3 d-flex justify-content-between">
         <a class="navbar-brand" href="#">Gestión de Gimnasio - reportes</a>
         <div class="dropdown">
@@ -23,7 +22,6 @@
     </nav>
 
     <div class="d-flex">
-        <!-- Sidebar -->
         <div class="bg-light border-end vh-100" id="sidebar">
             <ul class="list-group list-group-flush">
                 <li class="list-group-item"><a href="/pages/admin_clientes.html" onclick="loadSection('clientes')">Clientes</a></li>
@@ -36,7 +34,6 @@
             </ul>
         </div>
         
-        <!-- Contenido dinámico -->
         <div class="container p-4" id="content">
             <h2>Bienvenido a la seccion de reportes</h2>
             <p>Selecciona una opción del menú para comenzar.</p>
@@ -52,11 +49,10 @@
             const token = localStorage.getItem("token");
 
             if (!token) {
-                window.location.href = "../index.html"; // Redirigir al login si no hay token
+                window.location.href = "../index.html"; 
                 return;
             }
 
-            // Decodificar el token para obtener el nombre de usuario
             const payload = JSON.parse(atob(token.split(".")[1]));
             document.getElementById("username").textContent = payload.sub || "Usuario";
         });

@@ -25,18 +25,14 @@ public class CompraService {
     }
 
     public Compra guardarCompra(Compra compra) {
-        // Establecer fecha actual
         compra.setFecha(LocalDate.now());
 
-        // Aumentar stock de cada producto
         for (CompraProducto cp : compra.getProductos()) {
             Producto producto = productoRepository.findById(cp.getProducto().getId_producto())
                     .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
 
             producto.setStock(producto.getStock() + cp.getCantidad());
             productoRepository.save(producto);
-
-            cp.setCompra(compra); // establecer relación
         }
 
         return compraRepository.save(compra);

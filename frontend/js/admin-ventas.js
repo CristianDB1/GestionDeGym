@@ -53,7 +53,6 @@ function eliminarProducto(index) {
   renderTabla();
 }
 
-// Agregar producto a la tabla
 document.getElementById("agregarProducto").addEventListener("click", () => {
   const select = document.getElementById("productoSelect");
   const id = parseInt(select.value);
@@ -84,7 +83,6 @@ document.getElementById("agregarProducto").addEventListener("click", () => {
   renderTabla();
 });
 
-// Enviar venta al backend
 document.getElementById("guardarVenta").addEventListener("click", () => {
   if (productosVenta.length === 0) {
     alert("Agrega al menos un producto a la venta");
@@ -117,7 +115,6 @@ document.getElementById("guardarVenta").addEventListener("click", () => {
     .catch(err => alert(err.message));
 });
 
-// Inicializar
 document.addEventListener("DOMContentLoaded", () => {
   cargarProductos();
   document.getElementById("username").textContent = JSON.parse(atob(localStorage.getItem("token").split(".")[1])).sub;
