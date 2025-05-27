@@ -17,15 +17,15 @@ public class Venta {
 
     @OneToMany(mappedBy = "venta", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
-    private List<VentaProducto> productos;
+    private List<VentaProducto> ventaProductos;
 
     public Venta (){
     }
 
-    public Venta(int id_venta, LocalDate fecha, List<VentaProducto> productos) {
+    public Venta(int id_venta, LocalDate fecha, List<VentaProducto> ventaProductos) {
         this.id_venta = id_venta;
         this.fecha = fecha;
-        this.productos = productos;
+        this.ventaProductos = ventaProductos;
     }
 
     public int getId_venta() {
@@ -44,11 +44,11 @@ public class Venta {
         this.fecha = fecha;
     }
 
-    public List<VentaProducto> getProductos() {
-        return productos;
+    public List<VentaProducto> getVentaProductos() {
+        return ventaProductos;
     }
 
-    public void setProductos(List<VentaProducto> productos) {
-        this.productos = productos;
+    public void setVentaProductos(List<VentaProducto> ventaProductos) {
+        this.ventaProductos = ventaProductos;
     }
 }

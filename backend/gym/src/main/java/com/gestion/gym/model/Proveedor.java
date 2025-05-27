@@ -1,5 +1,6 @@
 package com.gestion.gym.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.util.List;
 
@@ -15,17 +16,19 @@ public class Proveedor {
     private String telefono;
     private String direccion;
 
-    @OneToMany(mappedBy = "proveedor", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Producto> productos;
+    @OneToMany(mappedBy = "proveedor",cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<CompraProducto> productosComprados;
+
 
     public Proveedor() {}
 
-    public Proveedor(int id_proveedor, String nombre, String telefono, String direccion, List<Producto> productos) {
+    public Proveedor(int id_proveedor, String nombre, String telefono, String direccion, List<CompraProducto> productosComprados) {
         this.id_proveedor = id_proveedor;
         this.nombre = nombre;
         this.telefono = telefono;
         this.direccion = direccion;
-        this.productos = productos;
+        this.productosComprados = productosComprados;
     }
 
     public int getId_proveedor() {
@@ -60,11 +63,11 @@ public class Proveedor {
         this.direccion = direccion;
     }
 
-    public List<Producto> getProductos() {
-        return productos;
+    public List<CompraProducto> getProductosComprados() {
+        return productosComprados;
     }
 
-    public void setProductos(List<Producto> productos) {
-        this.productos = productos;
+    public void setProductosComprados(List<CompraProducto> productosComprados) {
+        this.productosComprados = productosComprados;
     }
 }

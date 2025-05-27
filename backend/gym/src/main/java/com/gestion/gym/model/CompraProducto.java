@@ -18,15 +18,20 @@ public class CompraProducto {
     @JoinColumn(name = "producto_id")
     private Producto producto;
 
+    @ManyToOne
+    @JoinColumn(name = "proveedor_id")
+    private Proveedor proveedor;
+
     private int cantidad;
     private double precioCompra;
 
     public CompraProducto(){}
 
-    public CompraProducto(int id_compra_producto, Compra compra, Producto producto, int cantidad, double precioCompra) {
+    public CompraProducto(int id_compra_producto, Compra compra, Producto producto, Proveedor proveedor, int cantidad, double precioCompra) {
         this.id_compra_producto = id_compra_producto;
         this.compra = compra;
         this.producto = producto;
+        this.proveedor = proveedor;
         this.cantidad = cantidad;
         this.precioCompra = precioCompra;
     }
@@ -53,6 +58,14 @@ public class CompraProducto {
 
     public void setProducto(Producto producto) {
         this.producto = producto;
+    }
+
+    public Proveedor getProveedor() {
+        return proveedor;
+    }
+
+    public void setProveedor(Proveedor proveedor) {
+        this.proveedor = proveedor;
     }
 
     public int getCantidad() {

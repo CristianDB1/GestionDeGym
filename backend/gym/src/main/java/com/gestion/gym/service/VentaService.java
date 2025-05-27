@@ -20,20 +20,22 @@ public class VentaService {
     @Autowired
     private ProductoRepository productoRepository;
 
-    public Venta guardarVenta(Venta venta) {
-        venta.setFecha(LocalDate.now());
+    public Venta registrarVenta(Venta venta) {
+        if (venta.getFecha() == null) {
+            venta.setFecha(LocalDate.now());
+        }
 
-        for (VentaProducto vp : venta.getProductos()) {
+        for (VentaProducto vp : venta.getVentaProductos()) {
             Producto producto = productoRepository.findById(vp.getProducto().getId_producto())
-                    .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
+                    .orElseThrow(() -> new IllegalArgumentException("Producto no encontrado con ID: " + vp.getProducto().getId_producto()));
 
             if (producto.getStock() < vp.getCantidad()) {
-                throw new RuntimeException("Stock insuficiente para el producto: " + producto.getNombre());
+                throw new IllegalArgumentException("Stock insuficiente para el producto: " + producto.getNombre());
             }
 
             producto.setStock(producto.getStock() - vp.getCantidad());
-            productoRepository.save(producto);
 
+            vp.setProducto(producto);
             vp.setVenta(venta);
         }
 
@@ -44,13 +46,12 @@ public class VentaService {
         return ventaRepository.findAll();
     }
 
-    public boolean eliminarVenta(int id) {
-        Optional<Venta> ventaOpt = ventaRepository.findById(id);
-        if (ventaOpt.isPresent()) {
-            ventaRepository.delete(ventaOpt.get());
-            return true;
-        }
-        return false;
+    public Optional<Venta> buscarPorId(int id) {
+        return ventaRepository.findById(id);
+    }
+
+    public void eliminarVenta(int id) {
+        ventaRepository.deleteById(id);
     }
 
 

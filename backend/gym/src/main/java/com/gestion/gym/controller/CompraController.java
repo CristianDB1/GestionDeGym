@@ -1,5 +1,6 @@
 package com.gestion.gym.controller;
 
+
 import com.gestion.gym.model.Compra;
 import com.gestion.gym.service.CompraService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,20 +15,33 @@ import java.util.List;
 public class CompraController {
 
     @Autowired
-    private final CompraService compraService;
+    private CompraService compraService;
 
-    public CompraController(CompraService compraService) {
-        this.compraService = compraService;
+    @PostMapping("/registrar")
+    public ResponseEntity<?> registrar(@RequestBody Compra compra){
+        try {
+            Compra nuevaCompra = compraService.registrarCompra(compra);
+            return ResponseEntity.status(HttpStatus.CREATED).body(nuevaCompra);
+        } catch (IllegalArgumentException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @GetMapping("/listar")
-    public ResponseEntity<List<Compra>> listar() {
+    public ResponseEntity<List<Compra>> listar(){
         return ResponseEntity.ok(compraService.listarCompras());
     }
 
-    @PostMapping("/crear")
-    public ResponseEntity<Compra> registrarCompra(@RequestBody Compra compra) {
-        Compra nueva = compraService.guardarCompra(compra);
-        return ResponseEntity.status(HttpStatus.CREATED).body(nueva);
+    @GetMapping("/buscar/{id}")
+    public ResponseEntity<?> buscarPorId(@PathVariable int id) {
+        return compraService.buscarPorId(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @DeleteMapping("/eliminar/{id}")
+    public ResponseEntity<?> eliminar(@PathVariable int id) {
+        compraService.eliminarCompra(id);
+        return ResponseEntity.noContent().build();
     }
 }

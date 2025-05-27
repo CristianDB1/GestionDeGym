@@ -14,20 +14,15 @@ public class Compra {
 
     private LocalDate fecha;
 
-    @ManyToOne
-    @JoinColumn(name = "proveedor_id")
-    private Proveedor proveedor;
-
     @OneToMany(mappedBy = "compra",cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<CompraProducto> productos;
+    private List<CompraProducto> compraProductos;
 
     public Compra() {}
 
-    public Compra(int id_compra, LocalDate fecha, Proveedor proveedor, List<CompraProducto> productos) {
+    public Compra(int id_compra, LocalDate fecha, List<CompraProducto> compraProductos) {
         this.id_compra = id_compra;
         this.fecha = fecha;
-        this.proveedor = proveedor;
-        this.productos = productos;
+        this.compraProductos = compraProductos;
     }
 
     public int getId_compra() {
@@ -46,19 +41,11 @@ public class Compra {
         this.fecha = fecha;
     }
 
-    public Proveedor getProveedor() {
-        return proveedor;
+    public List<CompraProducto> getCompraProductos() {
+        return compraProductos;
     }
 
-    public void setProveedor(Proveedor proveedor) {
-        this.proveedor = proveedor;
-    }
-
-    public List<CompraProducto> getProductos() {
-        return productos;
-    }
-
-    public void setProductos(List<CompraProducto> productos) {
-        this.productos = productos;
+    public void setCompraProductos(List<CompraProducto> compraProductos) {
+        this.compraProductos = compraProductos;
     }
 }

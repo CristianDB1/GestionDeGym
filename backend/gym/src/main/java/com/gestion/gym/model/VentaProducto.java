@@ -1,6 +1,6 @@
 package com.gestion.gym.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -13,7 +13,7 @@ public class VentaProducto {
 
     @ManyToOne
     @JoinColumn(name = "venta_id")
-    @JsonBackReference
+    @JsonIgnore
     private Venta venta;
 
     @ManyToOne

@@ -1,7 +1,6 @@
 package com.gestion.gym.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import java.util.List;
 
@@ -18,25 +17,25 @@ public class Producto {
     private double precio;
     private int stock;
 
-    @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<CompraProducto> compras;
+
+    @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<VentaProducto> ventas;
 
-    @ManyToOne
-    @JoinColumn(name = "proveedor_id")
-    @JsonIgnoreProperties("productos")
-    private Proveedor proveedor;
 
     public Producto() {}
 
-    public Producto(int id_producto, String nombre, String descripcion, double precio, int stock, List<VentaProducto> ventas, Proveedor proveedor) {
+    public Producto(int id_producto, String nombre, String descripcion, double precio, int stock, List<CompraProducto> compras, List<VentaProducto> ventas) {
         this.id_producto = id_producto;
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.precio = precio;
         this.stock = stock;
+        this.compras = compras;
         this.ventas = ventas;
-        this.proveedor = proveedor;
     }
 
     public int getId_producto() {
@@ -79,19 +78,19 @@ public class Producto {
         this.stock = stock;
     }
 
+    public List<CompraProducto> getCompras() {
+        return compras;
+    }
+
+    public void setCompras(List<CompraProducto> compras) {
+        this.compras = compras;
+    }
+
     public List<VentaProducto> getVentas() {
         return ventas;
     }
 
     public void setVentas(List<VentaProducto> ventas) {
         this.ventas = ventas;
-    }
-
-    public Proveedor getProveedor() {
-        return proveedor;
-    }
-
-    public void setProveedor(Proveedor proveedor) {
-        this.proveedor = proveedor;
     }
 }

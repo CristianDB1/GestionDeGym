@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
@@ -17,21 +16,31 @@ public class VentaController {
     @Autowired
     private VentaService ventaService;
 
-    @PostMapping("/crear")
-    public ResponseEntity<Venta> registrarVenta(@RequestBody Venta venta) {
-        Venta nueva = ventaService.guardarVenta(venta);
-        return ResponseEntity.status(HttpStatus.CREATED).body(nueva);
+    @PostMapping("/registrar")
+    public ResponseEntity<?> registrar(@RequestBody Venta venta) {
+        try {
+            Venta nuevaVenta = ventaService.registrarVenta(venta);
+            return ResponseEntity.status(HttpStatus.CREATED).body(nuevaVenta);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @GetMapping("/listar")
-    public ResponseEntity<List<Venta>> listarVentas() {
+    public ResponseEntity<List<Venta>> listar() {
         return ResponseEntity.ok(ventaService.listarVentas());
     }
 
+    @GetMapping("/buscar/{id}")
+    public ResponseEntity<?> buscarPorId(@PathVariable int id) {
+        return ventaService.buscarPorId(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
     @DeleteMapping("/eliminar/{id}")
-    public ResponseEntity<?> eliminarVenta(@PathVariable int id) {
-        return ventaService.eliminarVenta(id)
-                ? ResponseEntity.ok().build()
-                : ResponseEntity.notFound().build();
+    public ResponseEntity<?> eliminar(@PathVariable int id) {
+        ventaService.eliminarVenta(id);
+        return ResponseEntity.noContent().build();
     }
 }
