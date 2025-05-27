@@ -1,5 +1,3 @@
-// admin-compras.js
-
 let productosCompra = [];
 
 function authHeader() {
@@ -11,7 +9,6 @@ function authHeader() {
   };
 }
 
-// Cargar proveedores al select
 function cargarProveedores() {
   fetch("http://localhost:8080/api/proveedores/listar", authHeader())
     .then(res => res.json())
@@ -27,7 +24,6 @@ function cargarProveedores() {
     });
 }
 
-// Cargar productos al select
 function cargarProductos() {
   fetch("http://localhost:8080/api/productos/listar", authHeader())
     .then(res => res.json())
@@ -71,7 +67,6 @@ function eliminarProducto(index) {
   renderTabla();
 }
 
-// Agregar producto a la tabla
 document.getElementById("agregarProducto").addEventListener("click", () => {
   const select = document.getElementById("productoSelect");
   const id = parseInt(select.value);
@@ -133,7 +128,6 @@ document.getElementById("guardarCompra").addEventListener("click", () => {
     .catch(err => alert(err.message));
 });
 
-// Inicializar todo
 window.addEventListener("DOMContentLoaded", () => {
   cargarProveedores();
   cargarProductos();

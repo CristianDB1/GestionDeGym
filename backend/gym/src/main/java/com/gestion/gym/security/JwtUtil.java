@@ -5,32 +5,36 @@ import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Component;
 import javax.crypto.SecretKey;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Component
 public class JwtUtil {
 
     private static final String SECRET_KEY = "ClaveSecretaSuperSeguraParaJWTQueDebeSerMuyLarga";
-    private static final long EXPIRATION_TIME = 86400000; // 1 día en milisegundos
+    private static final long EXPIRATION_TIME = 86400000;
 
     private final SecretKey key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
 
-    /** Genera un token JWT basado en el username */
-    public String generateToken(String username, String rol) {
+    public String generateToken(String username, String role) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("role", role);
+        claims.put("authorities", List.of(role));
+
         return Jwts.builder()
-                .subject(username)
-                .claim("rol", rol)
-                .issuedAt(new Date())
-                .expiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
-                .signWith(key)
+                .setClaims(claims)
+                .setSubject(username)
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+                .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }
 
-    /** Extrae el nombre de usuario del token */
     public String extractUsername(String token) {
         return parseToken(token).getSubject();
     }
 
-    /** Valida si un token es correcto y no ha expirado */
     public boolean validateToken(String token) {
         try {
             return !parseToken(token).getExpiration().before(new Date());
@@ -39,7 +43,6 @@ public class JwtUtil {
         }
     }
 
-    /** Parsea el token JWT y devuelve los claims (información del token) */
     private Claims parseToken(String token) {
         return Jwts.parser()
                 .verifyWith(key)

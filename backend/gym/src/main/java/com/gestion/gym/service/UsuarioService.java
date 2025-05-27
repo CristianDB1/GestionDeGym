@@ -31,11 +31,14 @@ public class UsuarioService {
 
     @Transactional
     public Usuario guardar(Usuario usuario) {
-        // Verificar si ya existe un usuario con el mismo username
         if (usuarioRepository.existsByUsername(usuario.getUsername())) {
             throw new IllegalArgumentException("El nombre de usuario ya está en uso.");
         }
         return usuarioRepository.save(usuario);
+    }
+
+    public boolean existePorUsername(String username) {
+        return usuarioRepository.existsByUsername(username);
     }
 
     @Transactional

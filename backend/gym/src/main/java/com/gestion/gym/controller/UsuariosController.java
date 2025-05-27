@@ -13,14 +13,14 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/usuarios")
 @CrossOrigin(origins = "http://127.0.0.1:5500")
-public class UsuarioController {
+public class UsuariosController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
 
     private final UsuarioService usuarioService;
 
-    public UsuarioController(UsuarioService usuarioService) {
+    public UsuariosController(UsuarioService usuarioService) {
         this.usuarioService = usuarioService;
     }
 
@@ -30,7 +30,7 @@ public class UsuarioController {
         return ResponseEntity.ok(usuarios);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/buscar/{id}")
     public ResponseEntity<Usuario> obtenerUsuarioPorId(@PathVariable int id) {
         return usuarioService.obtenerPorId(id)
                 .map(ResponseEntity::ok)
@@ -40,7 +40,6 @@ public class UsuarioController {
     @PostMapping("/crear")
     public ResponseEntity<?> crearUsuario(@RequestBody Usuario usuario) {
         try {
-            // Encriptar la contraseña antes de guardar el usuario
             usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
 
             Usuario nuevoUsuario = usuarioService.guardar(usuario);
@@ -50,7 +49,7 @@ public class UsuarioController {
         }
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/actualizar/{id}")
     public ResponseEntity<?> actualizarUsuario(@PathVariable int id, @RequestBody Usuario usuario) {
         return usuarioService.obtenerPorId(id)
                 .map(usuarioExistente -> {
@@ -66,7 +65,7 @@ public class UsuarioController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/eliminar/{id}")
     public ResponseEntity<Object> eliminarUsuario(@PathVariable int id) {
         return usuarioService.obtenerPorId(id)
                 .map(usuario -> {

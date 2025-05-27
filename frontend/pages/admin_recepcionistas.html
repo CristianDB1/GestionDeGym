@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
 </head>
     <body>
-        <!-- Navbar -->
+        
         <nav class="navbar navbar-dark bg-dark px-3 d-flex justify-content-between">
             <a class="navbar-brand" href="#">Gestión de Gimnasio - recepcionistas</a>
             <div class="dropdown">
@@ -23,7 +23,7 @@
         </nav>
 
         <div class="d-flex">
-            <!-- Sidebar -->
+            
             <div class="bg-light border-end vh-100" id="sidebar">
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item"><a href="/pages/admin_clientes.html" onclick="loadSection('clientes')">Clientes</a></li>
@@ -38,48 +38,64 @@
             
         </div>
 
-        <!-- Contenido -->
+        
         <div class="container p-4" id="content">
-            <h3 class="mb-4">Registrar nuevo recepcionista</h3>
-            <form id="formRecepcionista" class="row g-3 mb-5">
-                <input type="hidden" id="usuarioId">
-                <div class="col-md-4">
-                <label class="form-label">Nombre</label>
-                <input type="text" class="form-control" id="nombre" required>
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3>Lista de Recepcionistas</h3>
+            <button class="btn btn-primary" id="btnNuevoRecepcionista">+ Nuevo</button>
+        </div>
+
+        <table id="tablaRecepcionistas" class="table table-striped">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Usuario</th>
+                <th>Rol</th>
+                <th>Acciones</th>
+            </tr>
+            </thead>
+                <tbody></tbody>
+            </table>
+            </div>
+        </div>
+
+        
+        <div class="modal fade" id="recepcionistaModal" tabindex="-1" aria-labelledby="recepcionistaModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+            <form id="recepcionistaForm" class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="recepcionistaModalLabel">Formulario de Recepcionista</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                 </div>
-                <div class="col-md-4">
-                <label class="form-label">Apellido</label>
-                <input type="text" class="form-control" id="apellido" required>
+                <div class="modal-body">
+                <input type="hidden" id="recepcionistaId">
+                <div class="mb-3">
+                    <label for="nombre" class="form-label">Nombre</label>
+                    <input type="text" id="nombre" class="form-control" required>
                 </div>
-                <div class="col-md-4">
-                <label class="form-label">Nombre de usuario</label>
-                <input type="text" class="form-control" id="userUsername" required>
+                <div class="mb-3">
+                    <label for="apellido" class="form-label">Apellido</label>
+                    <input type="text" id="apellido" class="form-control" required>
                 </div>
-                <div class="col-md-4">
-                <label class="form-label">Contraseña</label>
-                <input type="password" class="form-control" id="password" required>
+                <div class="mb-3">
+                    <label for="username" class="form-label">Usuario</label>
+                    <input type="text" id="username" class="form-control" required>
                 </div>
-                <div class="col-12">
-                <button type="submit" class="btn btn-success">Crear recepcionista</button>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Contraseña</label>
+                    <input type="password" id="password" class="form-control">
+                    <div class="form-text">Solo se requiere para la creación</div>
+                </div>
+                </div>
+                <div class="modal-footer">
+                <button type="submit" class="btn btn-success">Guardar</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                 </div>
             </form>
-
-            <h4>Recepcionistas registrados</h4>
-            <table id="tablaRecepcionistas" class="table table-bordered table-striped">
-                <thead class="table-dark text-center">
-                <tr>
-                    <th>ID</th>
-                    <th>Nombre</th>
-                    <th>Apellido</th>
-                    <th>Usuario</th>
-                    <th>Rol</th>
-                </tr>
-                </thead>
-                <tbody class="text-center"></tbody>
-            </table>
+            </div>
         </div>
-    
-
 
         <script>
             function loadSection(section) {
@@ -90,11 +106,10 @@
                 const token = localStorage.getItem("token");
 
                 if (!token) {
-                    window.location.href = "../index.html"; // Redirigir al login si no hay token
+                    window.location.href = "../index.html"; 
                     return;
                 }
 
-                // Decodificar el token para obtener el nombre de usuario
                 const payload = JSON.parse(atob(token.split(".")[1]));
                 document.getElementById("username").textContent = payload.sub || "Usuario";
             });

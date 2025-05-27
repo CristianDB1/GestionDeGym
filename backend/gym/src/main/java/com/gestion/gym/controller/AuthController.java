@@ -46,7 +46,6 @@ public class AuthController {
 
             UserDetails userDetails = userDetailsService.loadUserByUsername(usuario.getUsername());
 
-            // Obtener el rol del usuario autenticado
             Usuario usuarioDB = usuarioService.obtenerPorUsuario(usuario.getUsername()).orElseThrow();
             String role = usuarioDB.getRol().getNombre();
 
@@ -60,24 +59,27 @@ public class AuthController {
     }
 
 
-    @PostMapping("/crear")
-    public ResponseEntity<?> crearUsuario(@RequestBody Map<String, Object> payload) {
+    @PostMapping("/register")
+    public ResponseEntity<?> registrarUsuario(@RequestBody Map<String, Object> payload) {
         try {
-            // Obtener los valores del JSON
             String nombre = (String) payload.get("nombre");
             String apellido = (String) payload.get("apellido");
             String username = (String) payload.get("username");
             String password = (String) payload.get("password");
             Integer rolId = (Integer) payload.get("rol_id");
 
-            if (password == null || password.trim().isEmpty()) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("La contraseña no puede estar vacía.");
+            if (nombre == null || apellido == null || username == null || password == null || rolId == null) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Todos los campos son obligatorios.");
             }
 
-            // Buscar el rol en la base de datos
-            Rol rol = RolService.obtenerPorId(rolId).orElseThrow(() -> new IllegalArgumentException("Rol no encontrado"));
+            if (usuarioService.existePorUsername(username)) {
+                return ResponseEntity.status(HttpStatus.CONFLICT)
+                        .body("El nombre de usuario ya existe.");
+            }
 
-            // Crear y guardar el usuario
+            Rol rol = RolService.obtenerPorId(rolId)
+                    .orElseThrow(() -> new IllegalArgumentException("Rol no encontrado"));
+
             Usuario usuario = new Usuario();
             usuario.setNombre(nombre);
             usuario.setApellido(apellido);
@@ -92,6 +94,7 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
+
 
 
 }

@@ -1,5 +1,3 @@
-// admin-ventas.js
-
 let productosVenta = [];
 
 function authHeader() {

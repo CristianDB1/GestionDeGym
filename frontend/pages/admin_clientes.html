@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
 </head>
 <body>
-    <!-- Navbar -->
+    
     <nav class="navbar navbar-dark bg-dark px-3 d-flex justify-content-between">
         <a class="navbar-brand" href="#">Gestión de Gimnasio - cliente</a>
         <div class="dropdown">
@@ -24,7 +24,7 @@
     </nav>
 
     <div class="d-flex">
-        <!-- Sidebar -->
+        
         <div class="bg-light border-end vh-100" id="sidebar">
             <ul class="list-group list-group-flush">
                 <li class="list-group-item"><a href="/pages/admin_clientes.html" onclick="loadSection('clientes')">Clientes</a></li>
@@ -37,7 +37,7 @@
             </ul>
         </div>
     </div>    
-    <!-- Contenido -->
+
      <div class="container p-4" id="content">
         <h2>Gestión de Clientes</h2>
         <button class="btn btn-primary my-3" data-bs-toggle="modal" data-bs-target="#clienteModal">Agregar Cliente</button>
@@ -59,7 +59,7 @@
     </div>
     
 
-    <!-- Modal para Agregar/Editar Cliente -->
+    
     <div class="modal fade" id="clienteModal" tabindex="-1" aria-labelledby="clienteModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -102,11 +102,11 @@
             const token = localStorage.getItem("token");
 
             if (!token) {
-                window.location.href = "../index.html"; // Redirigir al login si no hay token
+                window.location.href = "../index.html"; 
                 return;
             }
 
-            // Decodificar el token para obtener el nombre de usuario
+            
             const payload = JSON.parse(atob(token.split(".")[1]));
             document.getElementById("username").textContent = payload.sub || "Usuario";
         });

@@ -31,12 +31,14 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Habilitar CORS
-                .csrf(csrf -> csrf.disable()) // Deshabilitar CSRF
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**").permitAll() // Rutas públicas
-                        .requestMatchers("/api/ADMIN/**").hasAuthority("ADMIN") // Solo ADMIN
-                        .requestMatchers("/api/RECEPCIONISTA/**").hasAuthority("RECEPCIONISTA") // Solo RECEPCIONISTA
+                        .requestMatchers("/api/auth/login").permitAll()
+                        //.requestMatchers("/api/auth/crear").hasAuthority("ADMIN")
+                        //.requestMatchers("/api/usuarios/**").hasAuthority("ADMIN")
+                        .requestMatchers("/api/ADMIN/**").hasAuthority("ADMIN")
+                        .requestMatchers("/api/RECEPCIONISTA/**").hasAuthority("RECEPCIONISTA")
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
@@ -47,10 +49,10 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of("http://127.0.0.1:5500", "http://localhost:5500")); // Permitir origenes del frontend
+        config.setAllowedOrigins(List.of("http://127.0.0.1:5500", "http://localhost:5500"));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("Authorization", "Content-Type"));
-        config.setAllowCredentials(true); // Permitir envío de credenciales (tokens, cookies, etc.)
+        config.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);

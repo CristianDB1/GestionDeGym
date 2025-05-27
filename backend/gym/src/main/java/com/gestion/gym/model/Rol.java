@@ -16,8 +16,7 @@ public class Rol {
     private String nombre;
     private String descripcion;
 
-    @OneToMany(mappedBy = "rol", cascade = CascadeType.ALL)
-    @JsonManagedReference
+    @OneToMany(mappedBy = "rol", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Usuario> usuario;
 
     public Rol() {

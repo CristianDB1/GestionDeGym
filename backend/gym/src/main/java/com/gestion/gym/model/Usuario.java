@@ -1,6 +1,6 @@
 package com.gestion.gym.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 @Entity
@@ -22,8 +22,8 @@ public class Usuario {
     private String password;
 
     @ManyToOne
-    @JsonBackReference
     @JoinColumn(name = "rol_id", nullable = false)
+    @JsonIgnoreProperties("usuario")
     private Rol rol;
 
     public Usuario() {

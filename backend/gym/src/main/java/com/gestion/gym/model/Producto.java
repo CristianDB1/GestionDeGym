@@ -24,7 +24,7 @@ public class Producto {
 
     @ManyToOne
     @JoinColumn(name = "proveedor_id")
-    @JsonIgnoreProperties("productos") //  Esto evita loops y asegura que el proveedor se incluya
+    @JsonIgnoreProperties("productos")
     private Proveedor proveedor;
 
     public Producto() {}
