@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestión de Compras | Gestión de Gimnasio</title>
+  <link rel="stylesheet" href="../css/admin-dashboard.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+</head>
+<body>
+  <nav class="navbar navbar-dark bg-dark px-3 d-flex justify-content-between">
+    <a class="navbar-brand" href="#">Gestión de Compras</a>
+    <div class="dropdown">
+      <button class="btn btn-secondary dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+        <span id="username">Cargando...</span>
+      </button>
+      <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+        <li><button class="dropdown-item" id="logoutBtn">Cerrar Sesión</button></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="d-flex">
+    <div class="bg-light border-end vh-100" id="sidebar">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item"><a href="/pages/admin_clientes.html" onclick="loadSection('clientes')">Clientes</a></li>
+            <li class="list-group-item"><a href="/pages/admin_gestion_compras.html" onclick="loadSection('gestionCompra')">Gestion Compra</a></li>
+            <li class="list-group-item"><a href="/pages/admin_membresias.html" onclick="loadSection('membresias')">Membresías</a></li>
+            <li class="list-group-item"><a href="/pages/admin_ventas.html" onclick="loadSection('ventas')">Ventas</a></li>
+            <li class="list-group-item"><a href="/pages/admin_recepcionistas.html" onclick="loadSection('recepcionistas')">Recepcionistas</a></li>
+            <li class="list-group-item"><a href="/pages/admin_compras.html" onclick="loadSection('compras')">Compras</a></li>
+            <li class="list-group-item"><a href="/pages/admin_reportes.html" onclick="loadSection('reportes')">Reportes</a></li>
+        </ul>
+    </div>
+
+    <div class="container-fluid p-4" id="content">
+        <div class="card mb-4 shadow">
+            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Gestión de Proveedores</h5>
+            <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#proveedorModal">+ Nuevo Proveedor</button>
+            </div>
+            <div class="card-body">
+            <table id="tablaProveedores" class="table table-bordered table-striped">
+                <thead class="table-dark text-center">
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Teléfono</th>
+                    <th>Dirección</th>
+                    <th>Acciones</th>
+                </tr>
+                </thead>
+                <tbody class="text-center"></tbody>
+            </table>
+            </div>
+        </div>
+
+        <div class="card shadow">
+            <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Gestión de Productos</h5>
+            <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#productoModal">+ Nuevo Producto</button>
+            </div>
+            <div class="card-body">
+            <table id="tablaProductos" class="table table-bordered table-striped">
+                <thead class="table-dark text-center">
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Descripción</th>
+                    <th>Precio</th>
+                    <th>Stock</th>
+                    <th>Acciones</th>
+                </tr>
+                </thead>
+                <tbody class="text-center"></tbody>
+            </table>
+            </div>
+        </div>
+        </div>
+    </div>
+
+  <div class="modal fade" id="proveedorModal" tabindex="-1" aria-labelledby="proveedorModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <form id="proveedorForm" class="modal-content">
+        <div class="modal-header bg-primary text-white">
+          <h5 class="modal-title" id="proveedorModalLabel">Proveedor</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" id="proveedorId">
+          <div class="mb-3">
+            <label for="proveedorNombre" class="form-label">Nombre</label>
+            <input type="text" class="form-control" id="proveedorNombre" required>
+          </div>
+          <div class="mb-3">
+            <label for="proveedorTelefono" class="form-label">Teléfono</label>
+            <input type="text" class="form-control" id="proveedorTelefono" required>
+          </div>
+          <div class="mb-3">
+            <label for="proveedorDireccion" class="form-label">Dirección</label>
+            <input type="text" class="form-control" id="proveedorDireccion" required>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-success">Guardar</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal fade" id="productoModal" tabindex="-1" aria-labelledby="productoModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <form id="productoForm" class="modal-content">
+        <div class="modal-header bg-success text-white">
+          <h5 class="modal-title" id="productoModalLabel">Producto</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" id="productoId">
+          <div class="mb-3">
+            <label for="productoNombre" class="form-label">Nombre</label>
+            <input type="text" class="form-control" id="productoNombre" required>
+          </div>
+          <div class="mb-3">
+            <label for="productoDescripcion" class="form-label">Descripción</label>
+            <input type="text" class="form-control" id="productoDescripcion" required>
+          </div>
+          <div class="mb-3">
+            <label for="productoPrecio" class="form-label">Precio</label>
+            <input type="number" step="0.01" class="form-control" id="productoPrecio" required>
+          </div>
+          <div class="mb-3">
+            <label for="productoStock" class="form-label">Stock</label>
+            <input type="number" class="form-control" id="productoStock" required>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-success">Guardar</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const token = localStorage.getItem("token");
+
+      if (!token) {
+        window.location.href = "../index.html";
+        return;
+      }
+
+      const payload = JSON.parse(atob(token.split(".")[1]));
+      document.getElementById("username").textContent = payload.sub || "Usuario";
+    });
+  </script>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+  <script src="../js/admin-gestion-compras.js"></script>
+  <script src="../js/logout.js"></script>
+  
+</body>
+</html>

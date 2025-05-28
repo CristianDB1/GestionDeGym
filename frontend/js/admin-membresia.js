@@ -19,7 +19,6 @@ function cargarClientes() {
         opt.textContent = `${cliente.nombre} ${cliente.apellido}`;
         select.appendChild(opt);
       });
-      // Inicializa Select2 después de cargar los clientes
       $('#clienteSelect').select2({ placeholder: "Buscar cliente..." });
     });
 }
