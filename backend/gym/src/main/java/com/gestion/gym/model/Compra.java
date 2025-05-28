@@ -1,7 +1,9 @@
 package com.gestion.gym.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -15,7 +17,8 @@ public class Compra {
     private LocalDate fecha;
 
     @OneToMany(mappedBy = "compra",cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<CompraProducto> compraProductos;
+    @JsonIgnoreProperties("compra")
+    private List<CompraProducto> compraProductos = new ArrayList<>();
 
     public Compra() {}
 

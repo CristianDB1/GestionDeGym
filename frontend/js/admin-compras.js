@@ -147,6 +147,41 @@ document.addEventListener("DOMContentLoaded", function () {
       });
   });
 
+  function cargarHistorialCompras() {
+  const token = localStorage.getItem("token");
+  if (!token) return;
+
+  fetch("http://localhost:8080/api/compras/listar", {
+    headers: {
+      "Authorization": `Bearer ${token}`,
+      "Content-Type": "application/json"
+    }
+  })
+    .then(res => res.json())
+    .then(compras => {
+      const tabla = $("#tablaHistorialCompras").DataTable();
+      tabla.clear();
+
+      compras.forEach(c => {
+        const productosHtml = c.productos.map(p =>
+          `${p.producto} (x${p.cantidad}) - ${p.proveedor}<br>`
+        ).join("");
+
+        tabla.row.add([
+          c.id,
+          c.fecha,
+          productosHtml,
+          `${c.total} COP`
+        ]);
+      });
+
+      tabla.draw();
+    })
+    .catch(err => console.error("Error al cargar historial de compras:", err));
+}
+
+  $('#tablaHistorialCompras').DataTable();
+  cargarHistorialCompras();
   cargarProveedores();
   cargarProductos();
 });

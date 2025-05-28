@@ -47,9 +47,11 @@ public class CompraService {
         return compraRepository.save(compra);
     }
 
-    public List<Compra> listarCompras(){
+    public List<Compra> obtenerTodas() {
         return compraRepository.findAll();
     }
+
+
 
     public Optional<Compra> buscarPorId(int id){
         return compraRepository.findById(id);

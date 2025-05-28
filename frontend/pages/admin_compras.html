@@ -78,8 +78,31 @@
             <h5>Total Compra: <span id="totalCompra" class="fw-bold">0.00</span> COP</h5>
             <button id="btnRegistrarCompra" class="btn btn-primary mt-2">Registrar Compra</button>
         </div>
+        <hr class="my-4">
+        <div class="card shadow mt-5">
+        <div class="card-header bg-dark text-white">
+            <h5 class="mb-0">Historial de Compras Realizadas</h5>
         </div>
+        <div class="card-body">
+            <table id="tablaHistorialCompras" class="table table-bordered table-striped">
+            <thead class="table-dark text-center">
+                <tr>
+                <th>ID Compra</th>
+                <th>Fecha</th>
+                <th>Productos</th>
+                <th>Total</th>
+                </tr>
+            </thead>
+            <tbody class="text-center"></tbody>
+            </table>
+        </div>
+
+    
     </div>
+
+    
+
+    
 
    <script>
     document.addEventListener("DOMContentLoaded", function () {
