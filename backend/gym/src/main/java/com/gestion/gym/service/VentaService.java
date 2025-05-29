@@ -27,7 +27,7 @@ public class VentaService {
 
         for (VentaProducto vp : venta.getVentaProductos()) {
             Producto producto = productoRepository.findById(vp.getProducto().getId_producto())
-                    .orElseThrow(() -> new IllegalArgumentException("Producto no encontrado con ID: " + vp.getProducto().getId_producto()));
+                    .orElseThrow(() -> new IllegalArgumentException("Producto no encontrado"));
 
             if (producto.getStock() < vp.getCantidad()) {
                 throw new IllegalArgumentException("Stock insuficiente para el producto: " + producto.getNombre());

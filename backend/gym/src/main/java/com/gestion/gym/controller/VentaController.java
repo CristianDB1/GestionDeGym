@@ -6,7 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/ventas")
@@ -31,11 +35,29 @@ public class VentaController {
         return ResponseEntity.ok(ventaService.listarVentas());
     }
 
-    @GetMapping("/buscar/{id}")
-    public ResponseEntity<?> buscarPorId(@PathVariable int id) {
-        return ventaService.buscarPorId(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    @GetMapping("/detalle/{id}")
+    public ResponseEntity<?> detalle(@PathVariable int id) {
+        Optional<Venta> ventaOpt = ventaService.buscarPorId(id);
+        if (ventaOpt.isEmpty()) return ResponseEntity.notFound().build();
+
+        Venta venta = ventaOpt.get();
+
+        List<Map<String, Object>> detalle = venta.getVentaProductos().stream().map(vp -> {
+            Map<String, Object> d = new HashMap<>();
+            d.put("producto", vp.getProducto().getNombre());
+            d.put("cantidad", vp.getCantidad());
+            d.put("precioUnitario", vp.getPrecio_unitario());
+            d.put("subtotal", vp.getCantidad() * vp.getPrecio_unitario());
+            return d;
+        }).toList();
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("fecha", venta.getFecha());
+        response.put("ventaId", venta.getId_venta());
+        response.put("detalle", detalle);
+        response.put("total", detalle.stream().mapToDouble(d -> (double) d.get("subtotal")).sum());
+
+        return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/eliminar/{id}")

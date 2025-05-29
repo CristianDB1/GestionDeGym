@@ -50,16 +50,6 @@ public class CompraService {
             compraProductos.add(cp);
         }
 
-        System.out.println("Guardando compra con productos:");
-        for (CompraProducto cp : compra.getCompraProductos()) {
-            System.out.println("- Producto ID: " + cp.getProducto().getId_producto() +
-                    ", Proveedor ID: " + cp.getProveedor().getId_proveedor() +
-                    ", Cantidad: " + cp.getCantidad() +
-                    ", Precio: " + cp.getPrecioCompra());
-        }
-
-
-
         compra.setCompraProductos(compraProductos);
         return compraRepository.save(compra);
     }

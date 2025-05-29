@@ -17,7 +17,7 @@ public class Compra {
     private LocalDate fecha;
 
     @OneToMany(mappedBy = "compra",cascade = CascadeType.ALL, orphanRemoval = true)
-    //@JsonIgnoreProperties("compra")
+    @JsonIgnoreProperties("compra")
     private List<CompraProducto> compraProductos = new ArrayList<>();
 
     public Compra() {}

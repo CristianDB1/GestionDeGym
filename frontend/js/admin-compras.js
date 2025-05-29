@@ -9,7 +9,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   let productosEnCompra = [];
 
-  // Cargar proveedores
   function cargarProveedores() {
     fetch(`${API_URL}/proveedores/listar`, { headers })
       .then(res => res.json())
@@ -27,7 +26,6 @@ document.addEventListener("DOMContentLoaded", function () {
       .catch(err => console.error("Error al cargar proveedores:", err));
   }
 
-  // Cargar productos
   function cargarProductos() {
     fetch(`${API_URL}/productos/listar`, { headers })
       .then(res => res.json())
@@ -45,7 +43,6 @@ document.addEventListener("DOMContentLoaded", function () {
       .catch(err => console.error("Error al cargar productos:", err));
   }
 
-  // Agregar producto a la tabla
   document.getElementById("formAgregarProducto").addEventListener("submit", function (e) {
     e.preventDefault();
 
@@ -196,8 +193,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 }
 
-
-
   function cargarCompras() {
     fetch(`${API_URL}/compras/listar`, { headers })
       .then(res => res.json())
@@ -217,7 +212,6 @@ document.addEventListener("DOMContentLoaded", function () {
       });
   }
 
-  // Inicialización
   $('#tablaCompras').DataTable();
   cargarProveedores();
   cargarProductos();

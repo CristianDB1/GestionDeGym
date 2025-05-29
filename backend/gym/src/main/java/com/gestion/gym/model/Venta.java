@@ -1,8 +1,9 @@
 package com.gestion.gym.model;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -16,8 +17,8 @@ public class Venta {
     private LocalDate fecha;
 
     @OneToMany(mappedBy = "venta", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
-    private List<VentaProducto> ventaProductos;
+    @JsonIgnoreProperties("venta")
+    private List<VentaProducto> ventaProductos = new ArrayList<>();
 
     public Venta (){
     }
