@@ -97,7 +97,7 @@ document.getElementById("guardarVenta").addEventListener("click", () => {
     }))
   };
 
-  fetch("http://localhost:8080/api/ventas/crear", {
+  fetch("http://localhost:8080/api/ventas/registrar", {
     method: "POST",
     ...authHeader(),
     body: JSON.stringify(payload)
