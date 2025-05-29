@@ -10,6 +10,7 @@ import com.gestion.gym.repository.ProveedorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,14 +27,17 @@ public class CompraService {
     @Autowired
     private ProveedorRepository proveedorRepository;
 
-    public Compra registrarCompra(Compra compra){
-        if(compra.getFecha() == null){
+    public Compra registrarCompra(Compra compra) {
+        if (compra.getFecha() == null) {
             compra.setFecha(LocalDate.now());
         }
 
-        for (CompraProducto cp : compra.getCompraProductos()){
+        List<CompraProducto> compraProductos = new ArrayList<>();
+
+        for (CompraProducto cp : compra.getCompraProductos()) {
             Producto producto = productoRepository.findById(cp.getProducto().getId_producto())
                     .orElseThrow(() -> new IllegalArgumentException("Producto no encontrado"));
+
             Proveedor proveedor = proveedorRepository.findById(cp.getProveedor().getId_proveedor())
                     .orElseThrow(() -> new IllegalArgumentException("Proveedor no encontrado"));
 
@@ -42,16 +46,27 @@ public class CompraService {
             cp.setCompra(compra);
 
             producto.setStock(producto.getStock() + cp.getCantidad());
+
+            compraProductos.add(cp);
         }
 
+        System.out.println("Guardando compra con productos:");
+        for (CompraProducto cp : compra.getCompraProductos()) {
+            System.out.println("- Producto ID: " + cp.getProducto().getId_producto() +
+                    ", Proveedor ID: " + cp.getProveedor().getId_proveedor() +
+                    ", Cantidad: " + cp.getCantidad() +
+                    ", Precio: " + cp.getPrecioCompra());
+        }
+
+
+
+        compra.setCompraProductos(compraProductos);
         return compraRepository.save(compra);
     }
 
     public List<Compra> obtenerTodas() {
         return compraRepository.findAll();
     }
-
-
 
     public Optional<Compra> buscarPorId(int id){
         return compraRepository.findById(id);

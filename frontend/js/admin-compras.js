@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
   const API_URL = "http://localhost:8080/api";
   const token = localStorage.getItem("token");
+
   const headers = {
     "Authorization": `Bearer ${token}`,
     "Content-Type": "application/json"
@@ -8,80 +9,55 @@ document.addEventListener("DOMContentLoaded", function () {
 
   let productosEnCompra = [];
 
+  // Cargar proveedores
   function cargarProveedores() {
     fetch(`${API_URL}/proveedores/listar`, { headers })
       .then(res => res.json())
-      .then(data => {
+      .then(proveedores => {
         const select = document.getElementById("proveedorSelect");
-        data.forEach(p => {
-          const opt = document.createElement("option");
-          opt.value = p.id_proveedor;
-          opt.textContent = `${p.nombre}`;
-          select.appendChild(opt);
+        select.innerHTML = "<option value=''>Seleccione proveedor</option>";
+        proveedores.forEach(p => {
+          const option = document.createElement("option");
+          option.value = p.id_proveedor;
+          option.textContent = p.nombre;
+          select.appendChild(option);
         });
-        $("#proveedorSelect").select2({ placeholder: "Seleccione proveedor" });
+        $("#proveedorSelect").select2({ placeholder: "Buscar proveedor..." });
       })
       .catch(err => console.error("Error al cargar proveedores:", err));
   }
 
+  // Cargar productos
   function cargarProductos() {
     fetch(`${API_URL}/productos/listar`, { headers })
       .then(res => res.json())
-      .then(data => {
+      .then(productos => {
         const select = document.getElementById("productoSelect");
-        data.forEach(p => {
-          const opt = document.createElement("option");
-          opt.value = p.id_producto;
-          opt.textContent = `${p.nombre}`;
-          select.appendChild(opt);
+        select.innerHTML = "<option value=''>Seleccione producto</option>";
+        productos.forEach(p => {
+          const option = document.createElement("option");
+          option.value = p.id_producto;
+          option.textContent = p.nombre;
+          select.appendChild(option);
         });
-        $("#productoSelect").select2({ placeholder: "Seleccione producto" });
+        $("#productoSelect").select2({ placeholder: "Buscar producto..." });
       })
       .catch(err => console.error("Error al cargar productos:", err));
   }
 
-  function renderizarTablaCompra() {
-    const tbody = document.querySelector("#tablaCompra tbody");
-    tbody.innerHTML = "";
-
-    let totalCompra = 0;
-
-    productosEnCompra.forEach((item, index) => {
-      const fila = document.createElement("tr");
-
-      const total = item.precio * item.cantidad;
-      totalCompra += total;
-
-      fila.innerHTML = `
-        <td>${item.productoNombre}</td>
-        <td>${item.proveedorNombre}</td>
-        <td>${item.cantidad}</td>
-        <td>${item.precio.toFixed(2)}</td>
-        <td>${total.toFixed(2)}</td>
-        <td><button class="btn btn-danger btn-sm" onclick="eliminarFila(${index})">Eliminar</button></td>
-      `;
-
-      tbody.appendChild(fila);
-    });
-
-    document.getElementById("totalCompra").textContent = totalCompra.toFixed(2);
-  }
-
+  // Agregar producto a la tabla
   document.getElementById("formAgregarProducto").addEventListener("submit", function (e) {
     e.preventDefault();
 
-    const proveedorSelect = document.getElementById("proveedorSelect");
-    const productoSelect = document.getElementById("productoSelect");
+    const proveedorId = document.getElementById("proveedorSelect").value;
+    const proveedorNombre = document.getElementById("proveedorSelect").selectedOptions[0].text;
+    const productoId = document.getElementById("productoSelect").value;
+    const productoNombre = document.getElementById("productoSelect").selectedOptions[0].text;
     const cantidad = parseInt(document.getElementById("cantidad").value);
     const precio = parseFloat(document.getElementById("precio").value);
 
-    const proveedorId = proveedorSelect.value;
-    const proveedorNombre = proveedorSelect.options[proveedorSelect.selectedIndex].text;
-    const productoId = productoSelect.value;
-    const productoNombre = productoSelect.options[productoSelect.selectedIndex].text;
-
-    if (!proveedorId || !productoId || isNaN(cantidad) || cantidad <= 0 || isNaN(precio) || precio < 0) {
-      alert("Por favor, complete todos los campos correctamente.");
+    if (!proveedorId || !productoId || isNaN(cantidad) || cantidad <= 0 || isNaN(precio) || precio <= 0) {
+      alert("Complete todos los campos correctamente.");
       return;
     }
 
@@ -107,6 +83,33 @@ document.addEventListener("DOMContentLoaded", function () {
     $("#productoSelect").val(null).trigger("change");
   });
 
+  
+  function renderizarTablaCompra() {
+    const tbody = document.querySelector("#tablaCompra tbody");
+    tbody.innerHTML = "";
+    let total = 0;
+
+    productosEnCompra.forEach((item, index) => {
+      const subtotal = item.precio * item.cantidad;
+      total += subtotal;
+
+      tbody.innerHTML += `
+        <tr>
+          <td>${item.productoNombre}</td>
+          <td>${item.proveedorNombre}</td>
+          <td>${item.cantidad}</td>
+          <td>${item.precio.toFixed(2)}</td>
+          <td>${subtotal.toFixed(2)}</td>
+          <td>
+            <button class="btn btn-danger btn-sm" onclick="eliminarFila(${index})">Eliminar</button>
+          </td>
+        </tr>
+      `;
+    });
+
+    document.getElementById("totalCompra").textContent = total.toFixed(2);
+  }
+
   window.eliminarFila = function (index) {
     productosEnCompra.splice(index, 1);
     renderizarTablaCompra();
@@ -114,32 +117,34 @@ document.addEventListener("DOMContentLoaded", function () {
 
   document.getElementById("btnRegistrarCompra").addEventListener("click", function () {
     if (productosEnCompra.length === 0) {
-      alert("Agregue al menos un producto.");
+      alert("Agrega al menos un producto.");
       return;
     }
 
-    const compra = {
-      productos: productosEnCompra.map(item => ({
-        productoId: item.productoId,
-        proveedorId: item.proveedorId,
+    const payload = {
+      fecha: new Date().toISOString().split("T")[0],
+      compraProductos: productosEnCompra.map(item => ({
         cantidad: item.cantidad,
-        precio: item.precio
+        precioCompra: item.precio,
+        producto: { id_producto: parseInt(item.productoId) },
+        proveedor: { id_proveedor: parseInt(item.proveedorId) }
       }))
     };
 
     fetch(`${API_URL}/compras/registrar`, {
       method: "POST",
       headers,
-      body: JSON.stringify(compra)
+      body: JSON.stringify(payload)
     })
       .then(res => {
-        if (!res.ok) throw new Error("Error al registrar compra");
-        return res.text();
+        if (!res.ok) throw new Error("Error al registrar la compra");
+        return res.json();
       })
       .then(() => {
-        alert("Compra registrada correctamente.");
+        alert("Compra registrada con éxito");
         productosEnCompra = [];
         renderizarTablaCompra();
+        cargarCompras();
       })
       .catch(err => {
         console.error("Error:", err);
@@ -147,41 +152,74 @@ document.addEventListener("DOMContentLoaded", function () {
       });
   });
 
-  function cargarHistorialCompras() {
+  window.verDetalleCompra = function (compraId) {
   const token = localStorage.getItem("token");
-  if (!token) return;
 
-  fetch("http://localhost:8080/api/compras/listar", {
+  fetch(`http://localhost:8080/api/compras/detalle/${compraId}`, {
     headers: {
       "Authorization": `Bearer ${token}`,
       "Content-Type": "application/json"
     }
   })
     .then(res => res.json())
-    .then(compras => {
-      const tabla = $("#tablaHistorialCompras").DataTable();
-      tabla.clear();
+    .then(data => {
+      const tbody = document.getElementById("detalleCompraBody");
+      const totalSpan = document.getElementById("totalDetalleCompra");
 
-      compras.forEach(c => {
-        const productosHtml = c.productos.map(p =>
-          `${p.producto} (x${p.cantidad}) - ${p.proveedor}<br>`
-        ).join("");
+      tbody.innerHTML = "";
+      let total = 0;
 
-        tabla.row.add([
-          c.id,
-          c.fecha,
-          productosHtml,
-          `${c.total} COP`
-        ]);
+      data.detalle.forEach(item => {
+        const subtotal = item.subtotal ?? 0;
+        const precio = item.precioUnitario ?? 0;
+        total += subtotal;
+
+        const row = `
+          <tr>
+            <td>${item.producto}</td>
+            <td>${item.proveedor}</td>
+            <td>${item.cantidad}</td>
+            <td>${precio.toFixed(2)}</td>
+            <td>${subtotal.toFixed(2)}</td>
+          </tr>
+        `;
+        tbody.innerHTML += row;
       });
 
-      tabla.draw();
+      totalSpan.textContent = total.toFixed(2);
+      const modal = new bootstrap.Modal(document.getElementById("detalleCompraModal"));
+      modal.show();
     })
-    .catch(err => console.error("Error al cargar historial de compras:", err));
+    .catch(error => {
+      console.error("Error al cargar detalle de compra:", error);
+      alert("No se pudo cargar el detalle de la compra.");
+    });
 }
 
-  $('#tablaHistorialCompras').DataTable();
-  cargarHistorialCompras();
+
+
+  function cargarCompras() {
+    fetch(`${API_URL}/compras/listar`, { headers })
+      .then(res => res.json())
+      .then(compras => {
+        const table = $("#tablaCompras").DataTable();
+        table.clear();
+
+        compras.forEach(c => {
+          table.row.add([
+            c.id,
+            c.fecha,
+            `<button class="btn btn-info btn-sm" onclick="verDetalleCompra(${c.id})">Ver Detalles</button>`
+          ]);
+        });
+
+        table.draw();
+      });
+  }
+
+  // Inicialización
+  $('#tablaCompras').DataTable();
   cargarProveedores();
   cargarProductos();
+  cargarCompras();
 });

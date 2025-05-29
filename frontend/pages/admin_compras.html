@@ -84,18 +84,50 @@
             <h5 class="mb-0">Historial de Compras Realizadas</h5>
         </div>
         <div class="card-body">
-            <table id="tablaHistorialCompras" class="table table-bordered table-striped">
+            <table id="tablaCompras" class="table table-bordered table-striped">
             <thead class="table-dark text-center">
                 <tr>
                 <th>ID Compra</th>
                 <th>Fecha</th>
-                <th>Productos</th>
-                <th>Total</th>
+                <th>Acciones</th>
+                
                 </tr>
             </thead>
             <tbody class="text-center"></tbody>
             </table>
         </div>
+
+        <div class="modal fade" id="detalleCompraModal" tabindex="-1" aria-labelledby="detalleCompraModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl modal-dialog-centered">
+                <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="detalleCompraModalLabel">Detalle de Compra</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-bordered table-striped text-center">
+                    <thead class="table-dark">
+                        <tr>
+                        <th>Producto</th>
+                        <th>Proveedor</th>
+                        <th>Cantidad</th>
+                        <th>Precio Unitario</th>
+                        <th>Subtotal</th>
+                        </tr>
+                    </thead>
+                    <tbody id="detalleCompraBody"></tbody>
+                    </table>
+                    <div class="text-end mt-3">
+                    <h5>Total: <span id="totalDetalleCompra" class="fw-bold">0.00</span> COP</h5>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+                </div>
+            </div>
+            </div>
+        
 
     
     </div>

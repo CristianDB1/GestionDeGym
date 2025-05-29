@@ -10,9 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/compras")
@@ -79,4 +77,39 @@ public class CompraController {
         compraService.eliminarCompra(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/detalle/{id}")
+    public ResponseEntity<?> obtenerDetalle(@PathVariable int id) {
+        Optional<Compra> compraOpt = compraService.buscarPorId(id);
+
+        if (compraOpt.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Compra compra = compraOpt.get();
+        List<Map<String, Object>> detalle = new ArrayList<>();
+        double total = 0.0;
+
+        for (CompraProducto cp : compra.getCompraProductos()) {
+            Map<String, Object> item = new HashMap<>();
+            item.put("producto", cp.getProducto().getNombre());
+            item.put("proveedor", cp.getProveedor().getNombre());
+            item.put("cantidad", cp.getCantidad());
+            item.put("precioUnitario", cp.getPrecioCompra());
+            item.put("subtotal", cp.getCantidad() * cp.getPrecioCompra());
+
+            total += cp.getCantidad() * cp.getPrecioCompra();
+            detalle.add(item);
+        }
+
+        Map<String, Object> respuesta = new HashMap<>();
+        respuesta.put("compraId", compra.getId_compra());
+        respuesta.put("fecha", compra.getFecha());
+        respuesta.put("total", total);
+        respuesta.put("detalle", detalle);
+
+        return ResponseEntity.ok(respuesta);
+    }
+
+
 }

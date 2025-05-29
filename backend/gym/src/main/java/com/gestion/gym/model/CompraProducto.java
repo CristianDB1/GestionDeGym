@@ -1,5 +1,6 @@
 package com.gestion.gym.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 @Entity
@@ -12,6 +13,7 @@ public class CompraProducto {
 
     @ManyToOne
     @JoinColumn(name = "compra_id")
+    @JsonIgnoreProperties("compraProductos")
     private Compra compra;
 
     @ManyToOne
