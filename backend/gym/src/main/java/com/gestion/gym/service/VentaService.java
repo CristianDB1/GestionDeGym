@@ -8,6 +8,7 @@ import com.gestion.gym.repository.VentaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,6 +26,8 @@ public class VentaService {
             venta.setFecha(LocalDate.now());
         }
 
+        List<VentaProducto> ventaProductos = new ArrayList<>();
+
         for (VentaProducto vp : venta.getVentaProductos()) {
             Producto producto = productoRepository.findById(vp.getProducto().getId_producto())
                     .orElseThrow(() -> new IllegalArgumentException("Producto no encontrado"));
@@ -33,14 +36,19 @@ public class VentaService {
                 throw new IllegalArgumentException("Stock insuficiente para el producto: " + producto.getNombre());
             }
 
-            producto.setStock(producto.getStock() - vp.getCantidad());
-
             vp.setProducto(producto);
             vp.setVenta(venta);
+            vp.setPrecio_unitario(producto.getPrecio());
+
+            producto.setStock(producto.getStock() - vp.getCantidad());
+
+            ventaProductos.add(vp);
         }
 
+        venta.setVentaProductos(ventaProductos);
         return ventaRepository.save(venta);
     }
+
 
     public List<Venta> listarVentas() {
         return ventaRepository.findAll();

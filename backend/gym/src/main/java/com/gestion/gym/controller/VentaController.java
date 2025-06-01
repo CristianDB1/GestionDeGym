@@ -37,7 +37,9 @@ public class VentaController {
 
     @GetMapping("/detalle/{id}")
     public ResponseEntity<?> detalle(@PathVariable int id) {
+
         Optional<Venta> ventaOpt = ventaService.buscarPorId(id);
+
         if (ventaOpt.isEmpty()) return ResponseEntity.notFound().build();
 
         Venta venta = ventaOpt.get();
@@ -51,11 +53,15 @@ public class VentaController {
             return d;
         }).toList();
 
+        double total = detalle.stream()
+                .mapToDouble(i -> (double) i.get("subtotal"))
+                .sum();
+
         Map<String, Object> response = new HashMap<>();
         response.put("fecha", venta.getFecha());
         response.put("ventaId", venta.getId_venta());
         response.put("detalle", detalle);
-        response.put("total", detalle.stream().mapToDouble(d -> (double) d.get("subtotal")).sum());
+        response.put("total", total);
 
         return ResponseEntity.ok(response);
     }
