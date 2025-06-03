@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", function() {
             if (data.role === "ADMIN") {
                 window.location.href = "../pages/admin_dashboard.html";
             } else if (data.role === "RECEPCIONISTA") {
-                window.location.href = "../pages/recepcionista_dashboard.html";
+                window.location.href = "../pages/recepcionista_inicio.html";
             }       
 
         } catch (error) {
