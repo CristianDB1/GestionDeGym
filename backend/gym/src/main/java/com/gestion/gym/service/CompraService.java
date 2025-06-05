@@ -50,8 +50,7 @@ public class CompraService {
             compraProductos.add(cp);
         }
 
-        compra.setCompraProductos(compraProductos);
-        return compraRepository.save(compra);
+        compra.setCompraProductos(compraProductos);        return compraRepository.save(compra);
     }
 
     public List<Compra> obtenerTodas() {
