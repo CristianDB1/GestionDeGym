@@ -3,20 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Perfil Recepcionistas | Gestión de Gimnasio</title>
+    <title>Ventas | Gestión de Gimnasio</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="../css/recepcionista-dashboard.css">
+    <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.bootstrap5.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet">
+    <link href="../css/recepcionista-dashboard.css" rel="stylesheet">
+    <link href="../css/recepcionista-ventas.css" rel="stylesheet">
 </head>
 <body>
     <nav class="navbar navbar-expand-md navbar-dark bg-primary fixed-top">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">Mi Sitio</a>
-            
             <button class="navbar-toggler d-md-none" type="button" id="sidebarToggle">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
@@ -27,7 +29,6 @@
                             </span>
                         </a>
                     </li>
-                    
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
                             <i class="bi bi-person-circle me-1"></i>
@@ -49,19 +50,15 @@
             <a href="recepcionista_inicio.html" class="list-group-item list-group-item-action">
                 <i class="bi bi-house-door me-2"></i> Inicio
             </a>
-
-            <a href="recepcionista_cliente.html" class="list-group-item list-group-item-action ">
+            <a href="recepcionista_cliente.html" class="list-group-item list-group-item-action">
                 <i class="bi bi-people me-2"></i> Clientes
             </a>
-
             <a href="recepcionista_membresias.html" class="list-group-item list-group-item-action">
-                <i class="bi bi-clipboard-check me-2"></i> Membresias
+                <i class="bi bi-clipboard-check me-2"></i> Membresías
             </a>
-
             <a href="recepcionista_venta.html" class="list-group-item list-group-item-action active">
-                <i class="bi bi-people me-2"></i> Ventas
+                <i class="bi bi-cash-coin me-2"></i> Ventas
             </a>
-            
             <div class="list-group-item list-group-item-action dropdown-toggle" data-bs-toggle="collapse" href="#collapseExample">
                 <i class="bi bi-collection me-2"></i> Configuración
             </div>
@@ -77,11 +74,136 @@
     </div>
 
     <div class="main-content" id="mainContent">
-        <h1>Contenido de Ventas</h1>
-        <p>Aquí se realizaran las ventas</p>
+        <div class="container-fluid px-4">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="mt-4">Gestión de Ventas</h1>
+            </div>
+
+            <!-- Panel de Nueva Venta -->
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <i class="bi bi-cart-plus me-2"></i> Registrar Nueva Venta
+                </div>
+                <div class="card-body">
+                    <form id="formAgregarVenta" class="row g-3 mb-4">
+                        <div class="col-md-5">
+                            <label for="productoSelect" class="form-label">Producto</label>
+                            <select id="productoSelect" class="form-select select2" required></select>
+                        </div>
+                        <div class="col-md-2">
+                            <label for="cantidad" class="form-label">Cantidad</label>
+                            <input type="number" id="cantidad" class="form-control" min="1" value="1" required>
+                        </div>
+                        <div class="col-md-2">
+                            <label for="precio" class="form-label">Precio Unitario</label>
+                            <input type="number" id="precio" class="form-control" min="0" step="0.01" required>
+                        </div>
+                        <div class="col-md-3 d-flex align-items-end">
+                            <button type="submit" class="btn btn-success w-100">
+                                <i class="bi bi-plus-circle me-1"></i> Agregar Producto
+                            </button>
+                        </div>
+                    </form>
+
+                    <div class="table-responsive">
+                        <table id="tablaVenta" class="table table-striped table-hover">
+                            <thead class="table-primary">
+                                <tr>
+                                    <th>Producto</th>
+                                    <th>Cantidad</th>
+                                    <th>Precio Unitario</th>
+                                    <th>Subtotal</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="3" class="text-end fw-bold">Total:</td>
+                                    <td class="fw-bold" id="totalVenta">0.00</td>
+                                    <td></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+
+                    <div class="d-flex justify-content-end mt-3">
+                        <button id="btnCancelarVenta" class="btn btn-outline-danger me-2">
+                            <i class="bi bi-x-circle me-1"></i> Cancelar
+                        </button>
+                        <button id="btnRegistrarVenta" class="btn btn-primary">
+                            <i class="bi bi-save me-1"></i> Registrar Venta
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Historial de Ventas -->
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <i class="bi bi-clock-history me-2"></i> Historial de Ventas
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table id="tablaHistorialVentas" class="table table-striped table-hover w-100">
+                            <thead class="table-primary">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Fecha</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <script>
+    <!-- Modal de Detalle de Venta -->
+    <div class="modal fade" id="detalleVentaModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title">Detalle de Venta #<span id="ventaIdHeader"></span></h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <strong>Fecha:</strong> <span id="ventaFecha"></span>
+                        </div>
+                        <div class="col-md-6 text-end">
+                            <strong>Total:</strong> <span id="totalDetalleVenta" class="fw-bold">0.00</span> COP
+                        </div>
+                    </div>
+                    
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Producto</th>
+                                    <th>Cantidad</th>
+                                    <th>Precio Unitario</th>
+                                    <th>Subtotal</th>
+                                </tr>
+                            </thead>
+                            <tbody id="detalleVentaBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" id="btnGenerarFactura">
+                        <i class="bi bi-file-earmark-pdf me-1"></i> Generar Factura
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+   <script>
         function loadSection(section) {
             document.getElementById('content').innerHTML = `<h2>${section}</h2><p>Contenido de ${section} en construcción...</p>`;
         }
@@ -99,6 +221,20 @@
         });
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.bootstrap5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+    <script src="../js/recepcionista-ventas.js"></script>
     <script src="../js/recepcionistas-dashboard.js"></script>
     <script src="../js/logout.js"></script>
 </body>
