@@ -1,4 +1,3 @@
-/* Estilos específicos para la página de ventas */
 .card {
     box-shadow: 0 0.15rem 1.75rem 0 rgba(33, 40, 50, 0.15);
     border: none;
@@ -14,12 +13,10 @@
     -webkit-overflow-scrolling: touch;
 }
 
-/* Estilos para la tabla de productos en venta */
 #tablaVenta tfoot td {
     font-size: 1.1rem;
 }
 
-/* Estilos para el select2 */
 .select2-container--default .select2-selection--single {
     height: 38px;
     border: 1px solid #ced4da;
@@ -33,12 +30,10 @@
     height: 36px;
 }
 
-/* Estilos para el modal de detalle */
 #detalleVentaModal .modal-body {
     padding: 1.5rem;
 }
 
-/* Ajustes para pantallas pequeñas */
 @media (max-width: 768px) {
     .card-header {
         padding: 1rem;

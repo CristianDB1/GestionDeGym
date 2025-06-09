@@ -10,7 +10,6 @@ document.addEventListener("DOMContentLoaded", function () {
     let productosEnVenta = [];
     let ventaActual = null;
 
-    // Inicializar DataTables
     const tablaHistorial = $('#tablaHistorialVentas').DataTable({
         dom: '<"row"<"col-md-6"l><"col-md-6"f>>rt<"row"<"col-md-6"i><"col-md-6"p>>B',
         buttons: [
@@ -49,11 +48,9 @@ document.addEventListener("DOMContentLoaded", function () {
         ]
     });
 
-    // Añadir los botones al DOM
     tablaHistorial.buttons().container()
         .appendTo($('.col-md-6:eq(0)', tablaHistorial.table().container()));
 
-    // Cargar productos disponibles
     function cargarProductos() {
         fetch(`${API_URL}/productos/listar`, { headers })
             .then(res => res.json())
@@ -85,7 +82,6 @@ document.addEventListener("DOMContentLoaded", function () {
             });
     }
 
-    // Actualizar precio cuando se selecciona un producto
     $('#productoSelect').on('change', function() {
         const precioBase = $(this).find(':selected').data('precio');
         if (precioBase) {
@@ -93,7 +89,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    // Renderizar tabla de productos en venta
     function renderizarTablaVenta() {
         const tbody = document.querySelector("#tablaVenta tbody");
         tbody.innerHTML = "";
@@ -122,13 +117,11 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("totalVenta").textContent = totalVenta.toFixed(2);
     }
 
-    // Función global para eliminar productos
     window.eliminarProducto = function(index) {
         productosEnVenta.splice(index, 1);
         renderizarTablaVenta();
     };
 
-    // Agregar producto a la venta
     document.getElementById("formAgregarVenta").addEventListener("submit", function(e) {
         e.preventDefault();
 
@@ -139,7 +132,6 @@ document.addEventListener("DOMContentLoaded", function () {
         const cantidad = parseInt(document.getElementById("cantidad").value);
         const precio = parseFloat(document.getElementById("precio").value);
 
-        // Validaciones
         if (!productoId) {
             showAlert('warning', 'Seleccione un producto');
             return;
@@ -165,7 +157,6 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        // Agregar o actualizar producto
         const existente = productosEnVenta.find(p => p.id === productoId);
         if (existente) {
             existente.cantidad += cantidad;
@@ -178,13 +169,11 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         }
 
-        // Resetear formulario
         this.reset();
         $("#productoSelect").val(null).trigger("change");
         renderizarTablaVenta();
     });
 
-    // Cancelar venta
     document.getElementById("btnCancelarVenta").addEventListener("click", function() {
         if (productosEnVenta.length === 0) return;
         
@@ -200,7 +189,6 @@ document.addEventListener("DOMContentLoaded", function () {
         );
     });
 
-    // Registrar venta
     document.getElementById("btnRegistrarVenta").addEventListener("click", function() {
         if (productosEnVenta.length === 0) {
             showAlert('warning', 'Agregue al menos un producto');
@@ -243,7 +231,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 renderizarTablaVenta();
                 cargarProductos();
                 cargarHistorialVentas();
-                ventaActual = data; // Guardar datos de la venta actual
+                ventaActual = data; 
             })
             .catch(err => {
                 console.error("Error:", err);
@@ -251,7 +239,6 @@ document.addEventListener("DOMContentLoaded", function () {
             });
     }
 
-    // Cargar historial de ventas
     function cargarHistorialVentas() {
         fetch(`${API_URL}/ventas/listar`, { headers })
             .then(res => res.json())
@@ -274,7 +261,6 @@ document.addEventListener("DOMContentLoaded", function () {
             });
     }
 
-    // Ver detalle de venta
     window.verDetalleVenta = function(ventaId) {
         fetch(`${API_URL}/ventas/detalle/${ventaId}`, { headers })
             .then(res => res.json())
@@ -284,11 +270,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 const ventaIdHeader = document.getElementById("ventaIdHeader");
                 const ventaFecha = document.getElementById("ventaFecha");
 
-                // Actualizar información de la venta
                 ventaIdHeader.textContent = data.id_venta;
                 ventaFecha.textContent = new Date(data.fecha).toLocaleDateString();
 
-                // Limpiar y llenar tabla de detalles
                 tbody.innerHTML = "";
                 let total = 0;
 
@@ -308,9 +292,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 });
 
                 totalSpan.textContent = total.toFixed(2);
-                ventaActual = data; // Guardar datos para generar factura
+                ventaActual = data; 
 
-                // Mostrar modal
                 const modal = new bootstrap.Modal(document.getElementById("detalleVentaModal"));
                 modal.show();
             })
@@ -320,19 +303,16 @@ document.addEventListener("DOMContentLoaded", function () {
             });
     };
 
-    // Generar factura en PDF
     document.getElementById("btnGenerarFactura").addEventListener("click", function() {
         if (!ventaActual) return;
         
         const doc = new jsPDF();
         
-        // Configuración inicial
         doc.setFontSize(18);
         doc.setTextColor(40);
         doc.setFont("helvetica", "bold");
         doc.text("FACTURA", 105, 20, { align: "center" });
         
-        // Información del gimnasio
         doc.setFontSize(12);
         doc.setFont("helvetica", "normal");
         doc.text("GIMNASIO FITNESS", 105, 30, { align: "center" });
@@ -340,16 +320,13 @@ document.addEventListener("DOMContentLoaded", function () {
         doc.text("Dirección: Calle 123 #45-67", 105, 40, { align: "center" });
         doc.text("Teléfono: (123) 456-7890", 105, 45, { align: "center" });
         
-        // Línea separadora
         doc.setDrawColor(200);
         doc.line(15, 50, 195, 50);
         
-        // Información de la factura
         doc.setFontSize(10);
         doc.text(`Factura No: ${ventaActual.id_venta}`, 15, 60);
         doc.text(`Fecha: ${new Date(ventaActual.fecha).toLocaleDateString()}`, 15, 65);
         
-        // Tabla de productos
         doc.autoTable({
             startY: 75,
             head: [['Producto', 'Cantidad', 'Precio Unitario', 'Subtotal']],
@@ -375,21 +352,17 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
         
-        // Total
         const total = ventaActual.detalle.reduce((sum, item) => sum + (item.precioUnitario * item.cantidad), 0);
         doc.text(`Total: $${total.toFixed(2)}`, 160, doc.autoTable.previous.finalY + 10);
         
-        // Pie de página
         doc.setFontSize(8);
         doc.setTextColor(150);
         doc.text("¡Gracias por su compra!", 105, 280, { align: "center" });
         doc.text("Este documento es una factura electrónica válida", 105, 285, { align: "center" });
         
-        // Guardar o abrir PDF
         doc.save(`Factura_${ventaActual.id_venta}.pdf`);
     });
 
-    // Función para mostrar alertas
     function showAlert(type, message) {
         const alertDiv = document.createElement('div');
         alertDiv.className = `alert alert-${type} alert-dismissible fade show position-fixed top-0 end-0 m-3`;
@@ -408,7 +381,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }, 5000);
     }
 
-    // Función para mostrar modales de confirmación
     function showConfirmModal(title, message, type, confirmCallback) {
         const modalId = 'confirmModal';
         let modal = document.getElementById(modalId);
@@ -454,7 +426,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Inicializar
     cargarProductos();
     cargarHistorialVentas();
 });
