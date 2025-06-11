@@ -3,95 +3,192 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Admin | Gestión de Gimnasio</title>
-    <link rel="stylesheet" href="../css/admin-dashboard.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+    <title>Inicio | Gestión de Gimnasio</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.bootstrap5.min.css">
+    <link rel="stylesheet" href="/css/admin-cliente.css">
+    <link href="/css/admin-dashboard.css" rel="stylesheet">
 </head>
 <body>
-    
-    <nav class="navbar navbar-dark bg-dark px-3 d-flex justify-content-between">
-        <a class="navbar-brand" href="#">Gestión de Gimnasio - cliente</a>
-        <div class="dropdown">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                <span id="username">Cargando...</span>
+    <nav class="navbar navbar-expand-md navbar-dark bg-primary fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="admin_inicio.html">Mi Sitio</a>
+            <button class="navbar-toggler d-md-none" type="button" id="sidebarToggle">
+                <span class="navbar-toggler-icon"></span>
             </button>
-            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                <li><button class="dropdown-item" id="logoutBtn">Cerrar Sesión</button></li>
-            </ul>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link position-relative" href="#">
+                            <i class="bi bi-bell"></i>
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                3
+                            </span>
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
+                            <i class="bi bi-person-circle me-1"></i>
+                            <span id="usernamePlaceholder">Usuario</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><button class="dropdown-item" id="logoutBtn">Cerrar Sesión</button></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
         </div>
     </nav>
 
-    <div class="d-flex">
-        
-        <div class="bg-light border-end vh-100" id="sidebar">
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item"><a href="/pages/admin_clientes.html" onclick="loadSection('clientes')">Clientes</a></li>
-                <li class="list-group-item"><a href="/pages/admin_gestion_compras.html" onclick="loadSection('gestionCompra')">Gestion Compra</a></li>
-                <li class="list-group-item"><a href="/pages/admin_membresias.html" onclick="loadSection('membresias')">Membresías</a></li>
-                <li class="list-group-item"><a href="/pages/admin_ventas.html" onclick="loadSection('ventas')">Ventas</a></li>
-                <li class="list-group-item"><a href="/pages/admin_recepcionistas.html" onclick="loadSection('recepcionistas')">Recepcionistas</a></li>
-                <li class="list-group-item"><a href="/pages/admin_compras.html" onclick="loadSection('compras')">Compras</a></li>
-                <li class="list-group-item"><a href="/pages/admin_reportes.html" onclick="loadSection('reportes')">Reportes</a></li>
-            </ul>
+    <div class="sidebar" id="sidebar">
+        <div class="list-group list-group-flush">
+            <a href="admin_inicio.html" class="list-group-item list-group-item-action">
+                <i class="bi bi-house-door me-2"></i> Inicio
+            </a>
+            <a href="admin_clientes.html" class="list-group-item list-group-item-action active">
+                <i class="bi bi-people me-2"></i> Clientes
+            </a>
+            <a href="admin_ventas.html" class="list-group-item list-group-item-action">
+                <i class="bi bi-cash-coin me-2"></i> Ventas
+            </a>
+            <a href="admin_compras.html" class="list-group-item list-group-item-action">
+                <i class="bi bi-bag me-2"></i> Compras
+            </a>
+            <div class="list-group-item list-group-item-action dropdown-toggle" data-bs-toggle="collapse" href="#collapseMembresias">
+                <i class="bi bi-collection me-2"></i> Gestion De Membresias
+            </div>
+            <div class="collapse" id="collapseMembresias">
+                <a href="admin_asignarMembresias.html" class="list-group-item list-group-item-action ps-5">
+                    <i class="bi bi-clipboard2-heart me-2"></i> Asignar Membresia
+                </a>
+            </div>
+            <div class="collapse" id="collapseMembresias">
+                <a href="admin_crearMembresia.html" class="list-group-item list-group-item-action ps-5">
+                    <i class="bi bi-clipboard2-plus me-2"></i> Crear Membresia
+                </a>
+            </div>
+            <div class="list-group-item list-group-item-action dropdown-toggle" data-bs-toggle="collapse" href="#collapseCompras">
+                <i class="bi bi-collection me-2"></i> Gestion De Compras
+            </div>
+            <div class="collapse" id="collapseCompras">
+                <a href="admin_proveedor.html" class="list-group-item list-group-item-action ps-5">
+                    <i class="bi bi-truck me-2"></i> Proveedor
+                </a>
+            </div>
+            <div class="collapse" id="collapseCompras">
+                <a href="admin_productos.html" class="list-group-item list-group-item-action ps-5">
+                    <i class="bi bi-basket me-2"></i> Productos
+                </a>
+            </div>
+            <div class="list-group-item list-group-item-action dropdown-toggle" data-bs-toggle="collapse" href="#collapseConfiguracion">
+                <i class="bi bi-collection me-2"></i> Configuración
+            </div>
+            <div class="collapse" id="collapseConfiguracion">
+                <a href="admin_usuarios.html" class="list-group-item list-group-item-action ps-5">
+                    <i class="bi bi-person-vcard me-2"></i> Usuarios
+                </a>
+            </div>
+            <div class="collapse" id="collapseConfiguracion">
+                <a href="admin_reportes.html" class="list-group-item list-group-item-action ps-5">
+                    <i class="bi bi-archive-fill me-2"></i> Reportes
+                </a>
+            </div>
         </div>
-    </div>    
-
-     <div class="container p-4" id="content">
-        <h2>Gestión de Clientes</h2>
-        <button class="btn btn-primary my-3" data-bs-toggle="modal" data-bs-target="#clienteModal">Agregar Cliente</button>
-
-        <table id="clientesTable" class="table table-striped">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Nombre</th>
-                    <th>Apellido</th>
-                    <th>Email</th>
-                    <th>Teléfono</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-            </tbody>
-        </table>
     </div>
-    
 
-    
+    <div class="main-content" id="mainContent">
+        <div class="container-fluid px-4">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="mt-4">Clientes</h1>
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#clienteModal">
+                    <i class="bi bi-plus-lg me-1"></i> Nuevo Cliente
+                </button>
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-header">
+                    <i class="bi bi-table me-1"></i>
+                    Listado de Clientes
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table id="clientesTable" class="table table-striped table-hover table-bordered w-100">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nombre</th>
+                                    <th>Apellido</th>
+                                    <th>Email</th>
+                                    <th>Teléfono</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="modal fade" id="clienteModal" tabindex="-1" aria-labelledby="clienteModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="clienteModalLabel">Agregar Cliente</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="clienteModalLabel">Agregar Nuevo Cliente</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form id="clienteForm">
                         <input type="hidden" id="clienteId">
-                        <div class="mb-3">
-                            <label for="nombre" class="form-label">Nombre</label>
-                            <input type="text" class="form-control" id="nombre" required>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="nombre" class="form-label">Nombre</label>
+                                <input type="text" class="form-control" id="nombre" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="apellido" class="form-label">Apellido</label>
+                                <input type="text" class="form-control" id="apellido" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="telefono" class="form-label">Teléfono</label>
+                                <input type="text" class="form-control" id="telefono" required>
+                            </div>
                         </div>
-                        <div class="mb-3">
-                            <label for="apellido" class="form-label">Apellido</label>
-                            <input type="text" class="form-control" id="apellido" required>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-primary">Guardar Cliente</button>
                         </div>
-                        <div class="mb-3">
-                            <label for="email" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="email" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="telefono" class="form-label">Teléfono</label>
-                            <input type="text" class="form-control" id="telefono" required>
-                        </div>
-                        <button type="submit" class="btn btn-success">Guardar</button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
 
+    <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title">Confirmar Eliminación</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    ¿Estás seguro de que deseas eliminar este cliente? Esta acción no se puede deshacer.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Eliminar</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <script>
         function loadSection(section) {
             document.getElementById('content').innerHTML = `<h2>${section}</h2><p>Contenido de ${section} en construcción...</p>`;
@@ -105,16 +202,24 @@
                 return;
             }
 
-            
             const payload = JSON.parse(atob(token.split(".")[1]));
-            document.getElementById("username").textContent = payload.sub || "Usuario";
+            document.getElementById("usernamePlaceholder").textContent = payload.sub || "Usuario";
         });
     </script>
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
-    <script src="../js/admin-clientes.js"></script>
-    <script src="../js/logout.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.bootstrap5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.colVis.min.js"></script>
+    <script src="/js/admin-clientes.js"></script>
+    <script src="/js/admin-dashboard.js"></script>
+    <script src="/js/logout.js"></script>
 </body>
 </html>
