@@ -34,9 +34,9 @@ document.addEventListener("DOMContentLoaded", function() {
             history.replaceState(null, null, window.location.href);
 
             if (data.role === "ADMIN") {
-                window.location.href = "../pages/admin_dashboard.html";
+                window.location.href = "/pages/admin_inicio.html";
             } else if (data.role === "RECEPCIONISTA") {
-                window.location.href = "../pages/recepcionista_inicio.html";
+                window.location.href = "/pages/recepcionista_inicio.html";
             }       
 
         } catch (error) {
