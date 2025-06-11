@@ -1,0 +1,99 @@
+.card {
+    box-shadow: 0 0.15rem 1.75rem 0 rgba(33, 40, 50, 0.15);
+    border: none;
+    margin-bottom: 2rem;
+}
+
+.card-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+    padding: 1.25rem 1.5rem;
+    font-weight: 600;
+}
+
+.table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.action-buttons .btn {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+    margin-right: 0.25rem;
+}
+
+.modal-header.bg-primary {
+    background-color: #0d6efd !important;
+}
+
+#membresiasTable th:nth-child(2),
+#membresiasTable td:nth-child(2) {
+    text-align: right;
+}
+
+#membresiasTable th:nth-child(3),
+#membresiasTable td:nth-child(3) {
+    text-align: center;
+}
+
+.badge {
+    font-size: 0.85em;
+    padding: 0.35em 0.65em;
+}
+
+.modal-header.bg-primary {
+    background-color: #0d6efd !important;
+}
+
+.modal-header.bg-danger {
+    background-color: #dc3545 !important;
+}
+
+.modal-header.bg-warning {
+    background-color: #ffc107 !important;
+    color: #212529;
+}
+
+.modal-body strong {
+    color: #0d6efd;
+}
+
+.alert {
+    transition: all 0.3s ease;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+#membresiaModal .form-control {
+    padding: 0.5rem 0.75rem;
+}
+
+#membresiaModal .form-label {
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+.custom-alert {
+    transition: all 0.3s ease;
+    border: none;
+    border-left: 4px solid;
+}
+
+.custom-alert.alert-success {
+    border-left-color: #0f5132;
+}
+
+.custom-alert.alert-danger {
+    border-left-color: #842029;
+}
+
+.custom-alert.alert-info {
+    border-left-color: #084298;
+}
+
+.custom-alert.alert-warning {
+    border-left-color: #664d03;
+}
+
+.custom-alert .bi {
+    font-size: 1.25rem;
+}
