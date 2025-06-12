@@ -144,10 +144,10 @@ document.addEventListener("DOMContentLoaded", function() {
                         p.stock,
                         `
                         <button class="btn btn-warning btn-sm editar-producto" data-id="${p.id_producto}">
-                            <i class="bi bi-pencil"></i>
+                            <i class="bi bi-pencil"></i> Editar
                         </button>
                         <button class="btn btn-danger btn-sm eliminar-producto" data-id="${p.id_producto}">
-                            <i class="bi bi-trash"></i>
+                            <i class="bi bi-trash"></i> Eliminar
                         </button>
                         `
                     ]);

@@ -106,10 +106,10 @@ document.addEventListener("DOMContentLoaded", function() {
                         p.direccion || 'N/A',
                         `
                         <button class="btn btn-warning btn-sm editar-proveedor" data-id="${p.id_proveedor}">
-                            <i class="bi bi-pencil"></i>
+                            <i class="bi bi-pencil"></i> Editar
                         </button>
                         <button class="btn btn-danger btn-sm eliminar-proveedor" data-id="${p.id_proveedor}">
-                            <i class="bi bi-trash"></i>
+                            <i class="bi bi-trash"></i> Eliminar
                         </button>
                         `
                     ]);
