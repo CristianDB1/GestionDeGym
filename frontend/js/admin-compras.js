@@ -281,11 +281,9 @@ document.addEventListener("DOMContentLoaded", function() {
                         c.id,
                         c.fecha,
                         `$${c.total?.toFixed(2) || '0.00'}`,
-                        `
-                        <button class="btn btn-info btn-sm" onclick="verDetalleCompra(${c.id})">
+                        `<button class="btn btn-info btn-sm" onclick="verDetalleCompra(${c.id})">
                             <i class="bi bi-eye"></i> Detalles
-                        </button>
-                        `
+                        </button>`
                     ]);
                 });
                 comprasTable.draw();
