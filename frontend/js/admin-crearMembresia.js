@@ -64,43 +64,43 @@ document.addEventListener("DOMContentLoaded", function() {
         .appendTo($('.col-md-6:eq(0)', table.table().container()));
 
     function showAlert(type, message, duration = 5000) {
-      document.querySelectorAll('.custom-alert').forEach(el => el.remove());
-      
-      const alertDiv = document.createElement('div');
-      alertDiv.className = `custom-alert alert alert-${type} alert-dismissible fade show position-fixed`;
-      alertDiv.style.cssText = `
-          top: 20px;
-          right: 20px;
-          z-index: 9999;
-          min-width: 300px;
-          box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-      `;
-      
-      alertDiv.innerHTML = `
-          <div class="d-flex align-items-center">
-              <i class="bi ${getAlertIcon(type)} me-2"></i>
-              <div>${message}</div>
-              <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert"></button>
-          </div>
-      `;
-      
-      document.body.appendChild(alertDiv);
-      
-      setTimeout(() => {
-          alertDiv.classList.remove('show');
-          setTimeout(() => alertDiv.remove(), 150);
-      }, duration);
-  }
+        document.querySelectorAll('.custom-alert').forEach(el => el.remove());
+        
+        const alertDiv = document.createElement('div');
+        alertDiv.className = `custom-alert alert alert-${type} alert-dismissible fade show position-fixed`;
+        alertDiv.style.cssText = `
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            min-width: 300px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        `;
+        
+        alertDiv.innerHTML = `
+            <div class="d-flex align-items-center">
+                <i class="bi ${getAlertIcon(type)} me-2"></i>
+                <div>${message}</div>
+                <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert"></button>
+            </div>
+        `;
+        
+        document.body.appendChild(alertDiv);
+        
+        setTimeout(() => {
+            alertDiv.classList.remove('show');
+            setTimeout(() => alertDiv.remove(), 150);
+        }, duration);
+    }
 
-  function getAlertIcon(type) {
-      const icons = {
-          'success': 'bi-check-circle-fill',
-          'danger': 'bi-exclamation-triangle-fill',
-          'warning': 'bi-exclamation-circle-fill',
-          'info': 'bi-info-circle-fill'
-      };
-      return icons[type] || 'bi-info-circle-fill';
-  }
+    function getAlertIcon(type) {
+        const icons = {
+            'success': 'bi-check-circle-fill',
+            'danger': 'bi-exclamation-triangle-fill',
+            'warning': 'bi-exclamation-circle-fill',
+            'info': 'bi-info-circle-fill'
+        };
+        return icons[type] || 'bi-info-circle-fill';
+    }
 
 
     function cargarMembresias() {
@@ -140,36 +140,36 @@ document.addEventListener("DOMContentLoaded", function() {
       const action = id ? 'actualizar' : 'crear';
 
       showConfirmModal(
-          `¿Confirmar ${action} de membresía?`,
-          `Nombre: <strong>${formData.nombre}</strong><br>
-          Precio: <strong>$${formData.precio.toLocaleString('es-CO')}</strong><br>
-          Duración: <strong>${formData.duracionDias} días</strong>`,
-          'primary',
-          () => {
-              const url = id ? `${API_URL}/actualizar/${id}` : `${API_URL}/crear`;
-              const method = id ? "PUT" : "POST";
+            `¿Confirmar ${action} de membresía?`,
+            `Nombre: <strong>${formData.nombre}</strong><br>
+            Precio: <strong>$${formData.precio.toLocaleString('es-CO')}</strong><br>
+            Duración: <strong>${formData.duracionDias} días</strong>`,
+            'primary',
+            () => {
+                const url = id ? `${API_URL}/actualizar/${id}` : `${API_URL}/crear`;
+                const method = id ? "PUT" : "POST";
 
-              fetch(url, {
-                  method,
-                  ...authHeader(),
-                  body: JSON.stringify(formData)
-              })
-              .then(response => {
-                  if (!response.ok) throw new Error("Error al guardar");
-                  return response.json();
-              })
-              .then(() => {
-                  $('#membresiaModal').modal('hide');
-                  cargarMembresias();
-                  showAlert('success', `Membresía ${action === 'crear' ? 'creada' : 'actualizada'} correctamente`);
-              })
-              .catch(error => {
-                  console.error("Error:", error);
-                  showAlert('danger', `Error al ${action} la membresía`);
-              });
-          }
-      );
-  }
+                fetch(url, {
+                    method,
+                    ...authHeader(),
+                    body: JSON.stringify(formData)
+                })
+                .then(response => {
+                    if (!response.ok) throw new Error("Error al guardar");
+                    return response.json();
+                })
+                .then(() => {
+                    $('#membresiaModal').modal('hide');
+                    cargarMembresias();
+                    showAlert('success', `Membresía ${action === 'crear' ? 'creada' : 'actualizada'} correctamente`);
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                    showAlert('danger', `Error al ${action} la membresía`);
+                });
+            }
+        );
+    }
 
     function editarMembresia(id) {
       fetch(`${API_URL}/buscar/${id}`, authHeader())
@@ -233,41 +233,41 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     function showConfirmModal(title, message, type, confirmCallback) {
-    const modalId = 'confirmModal';
-    let modal = document.getElementById(modalId);
-    
-    if (modal) modal.remove();
-    
-    modal = document.createElement('div');
-    modal.className = 'modal fade';
-    modal.id = modalId;
-    modal.innerHTML = `
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header bg-${type} text-white">
-                    <h5 class="modal-title">${title}</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    ${message}
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-${type}" id="confirmActionBtn">Confirmar</button>
+        const modalId = 'confirmModal';
+        let modal = document.getElementById(modalId);
+        
+        if (modal) modal.remove();
+        
+        modal = document.createElement('div');
+        modal.className = 'modal fade';
+        modal.id = modalId;
+        modal.innerHTML = `
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header bg-${type} text-white">
+                        <h5 class="modal-title">${title}</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        ${message}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-${type}" id="confirmActionBtn">Confirmar</button>
+                    </div>
                 </div>
             </div>
-        </div>
-    `;
-    
-    document.body.appendChild(modal);
-    const bsModal = new bootstrap.Modal(modal);
-    bsModal.show();
-    
-    modal.querySelector('#confirmActionBtn').addEventListener('click', function() {
-        confirmCallback();
-        bsModal.hide();
-    });
-}
+        `;
+        
+        document.body.appendChild(modal);
+        const bsModal = new bootstrap.Modal(modal);
+        bsModal.show();
+        
+        modal.querySelector('#confirmActionBtn').addEventListener('click', function() {
+            confirmCallback();
+            bsModal.hide();
+        });
+    }
 
     $('#membresiaModal').on('hidden.bs.modal', function () {
         document.getElementById("membresiaForm").reset();

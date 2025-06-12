@@ -1,0 +1,54 @@
+.card {
+    box-shadow: 0 0.15rem 1.75rem 0 rgba(33, 40, 50, 0.15);
+    border: none;
+    margin-bottom: 2rem;
+}
+
+.card-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+    padding: 1.25rem 1.5rem;
+    font-weight: 600;
+}
+
+.table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.action-buttons .btn {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+    margin-right: 0.25rem;
+}
+
+#productosTable th:nth-child(4),
+#productosTable td:nth-child(4) {
+    text-align: right;
+}
+
+#productosTable th:nth-child(5),
+#productosTable td:nth-child(5) {
+    text-align: center;
+}
+
+#productoModal .form-control {
+    padding: 0.5rem 0.75rem;
+}
+
+#productoModal .form-label {
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+@media (max-width: 768px) {
+    .card-header {
+        padding: 1rem;
+    }
+    
+    .dataTables_wrapper .dataTables_info,
+    .dataTables_wrapper .dataTables_paginate {
+        text-align: center;
+        float: none !important;
+    }
+}

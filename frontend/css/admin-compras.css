@@ -1,31 +1,87 @@
-#detalleCompra th,
-#detalleCompra td {
-    vertical-align: middle;
-    text-align: center;
-}
-
-#detalleCompra tfoot td {
-    font-weight: bold;
-    font-size: 1.1rem;
-    background-color: #f8f9fa;
-}
-
-#proveedorSelect,
-#productoSelect {
-    cursor: pointer;
-}
-
-#detalleCompra tbody tr:hover {
-    background-color: #f1f1f1;
+.card {
+    box-shadow: 0 0.15rem 1.75rem 0 rgba(33, 40, 50, 0.15);
+    border: none;
+    margin-bottom: 2rem;
 }
 
 .card-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+    padding: 1.25rem 1.5rem;
     font-weight: 600;
+}
+
+.table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+#tablaCompra th, 
+#tablaCompra td {
+    vertical-align: middle;
+}
+
+#tablaCompra tfoot td {
     font-size: 1.1rem;
 }
 
-.btn-success,
-.btn-primary {
-    font-weight: 500;
-    letter-spacing: 0.5px;
+.select2-container--default .select2-selection--single {
+    height: 38px;
+    border: 1px solid #ced4da;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    line-height: 36px;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 36px;
+}
+
+@media (max-width: 768px) {
+    .card-header {
+        padding: 1rem;
+    }
+    
+    #nuevaCompraModal .modal-dialog {
+        margin: 0.5rem auto;
+    }
+    
+    #formAgregarProducto .col-md-2.d-flex {
+        justify-content: flex-end;
+    }
+}
+
+.action-buttons .btn {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+    margin-right: 0.25rem;
+}
+
+#detalleCompraModal .modal-header {
+    background-color: #0dcaf0 !important;
+}
+
+#btnGenerarFactura {
+    margin-left: 10px;
+}
+
+@media (max-width: 576px) {
+    #btnGenerarFactura {
+        margin-left: 0;
+        margin-top: 10px;
+        width: 100%;
+    }
+}
+
+#btnGenerarFactura {
+    margin-left: 10px;
+}
+
+@media (max-width: 576px) {
+    #btnGenerarFactura {
+        margin-left: 0;
+        margin-top: 10px;
+        width: 100%;
+    }
 }
